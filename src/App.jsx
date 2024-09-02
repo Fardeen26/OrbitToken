@@ -19,13 +19,16 @@
 import Hero from "./components/Hero"
 import Navbar from "./components/Navbar"
 
+
 function App() {
 
   return (
+    // <WalletContextProvider>
     <div className="">
       <Navbar />
       <Hero />
     </div>
+    // </WalletContextProvider>
   )
 }
 

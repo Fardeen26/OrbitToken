@@ -13,6 +13,8 @@ import Token from './components/Token.jsx';
 import { Transaction } from './components/Transaction.jsx';
 import Account from './components/Account.jsx';
 import Navbar from "./components/Navbar"
+import WalletContextProvider from './components/ConnectionProvider.jsx'
+// import ShowBalance from './ShowBalance.jsx';
 
 const router = createBrowserRouter([
   {
@@ -32,12 +34,15 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <><Navbar />
-      <Account /></>,
+      <Account />
+    </>,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <WalletContextProvider>
+      <RouterProvider router={router} />
+    </WalletContextProvider>
   </React.StrictMode>
 );
