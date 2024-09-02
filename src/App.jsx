@@ -14,6 +14,7 @@ import GetAirdrop from './GetAirdrop';
 import SignMessage from './SignMessage'
 import ShowTokenBalance from './ShowTokenBalance'
 import TransferToken from './TransferToken'
+import Navbar from './components/Navbar';
 
 function App() {
   const network = WalletAdapterNetwork.Devnet;
@@ -33,6 +34,7 @@ function App() {
             <SignMessage />
             <ShowTokenBalance />
             <TransferToken />
+            <Navbar />
           </div>
         </WalletModalProvider>
       </WalletProvider>
