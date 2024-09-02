@@ -7,16 +7,32 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import App from './App.jsx'
+import Token from './components/Token.jsx';
+import { Transaction } from './components/Transaction.jsx';
+import Account from './components/Account.jsx';
+import Navbar from "./components/Navbar"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <>
-      <Navbar />
-      <App />
-    </>,
+    element: <App />,
+  },
+  {
+    path: "/token",
+    element: <><Navbar />
+      <Token /></>,
+  },
+  {
+    path: "/transaction",
+    element: <><Navbar />
+      <Transaction /></>,
+  },
+  {
+    path: "/account",
+    element: <><Navbar />
+      <Account /></>,
   },
 ]);
 
