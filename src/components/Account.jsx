@@ -46,7 +46,7 @@ const Account = () => {
     return (
         <div className="flex flex-col items-center justify-center p-5 mt-12">
             <h1 className="text-4xl font-mono font-extrabold">{balance > 0 ? `${balance} SOL` : ''}</h1>
-            <button onClick={getAirdrop}>Get Airdrop</button>
+            <button className='text-xl mt-5 px-3 py-2 w-72 bg-[#512DA8] text-white rounded hover:bg-black font-mono' onClick={getAirdrop}>Get Airdrop</button>
         </div>
     );
 };

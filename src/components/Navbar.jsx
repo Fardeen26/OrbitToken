@@ -12,13 +12,13 @@ const Navbar = () => {
                     </div>
                     <div className="flex gap-10">
                         <div className="">
-                            <Link to={'/token'} className="text-xl">Token</Link>
+                            <Link to={'/token'} className="text-xl font-serif">Token</Link>
                         </div>
                         <div className="">
-                            <Link to={'/transaction'} className="text-xl">Transaction</Link>
+                            <Link to={'/transaction'} className="text-xl font-serif">Transaction</Link>
                         </div>
                         <div className="">
-                            <Link to={'/account'} className="text-xl">Account</Link>
+                            <Link to={'/account'} className="text-xl font-serif">Account</Link>
                         </div>
                     </div>
                     <div className="">

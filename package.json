@@ -11,8 +11,12 @@
   },
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@metaplex-foundation/js": "^0.20.1",
+    "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
+    "@metaplex/js": "^4.12.0",
     "@nextui-org/react": "^2.4.6",
     "@solana/spl-token": "^0.4.8",
+    "@solana/spl-token-registry": "^0.2.4574",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
@@ -21,7 +25,8 @@
     "buffer": "^6.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "react-tabs": "^6.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
