@@ -1,4 +1,5 @@
-import { TOKEN_PROGRAM_ID, AccountLayout } from "@solana/spl-token";
+import { getTokenMetadata } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, AccountLayout } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import { useEffect, useState } from "react";
 
 const TokenBalance = () => {
     const [token, setToken] = useState([]);
+    const [token22, setToken22] = useState([])
     const { connection } = useConnection();
     const wallet = useWallet();
 
@@ -41,8 +43,34 @@ const TokenBalance = () => {
             }
         };
 
+        const getToken22Blanaces = async () => {
+            if (!wallet.publicKey) return;
+            const tokenMint22 = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_2022_PROGRAM_ID });
+            const userTokens22 = await Promise.all(tokenMint22.value.map(async (account) => {
+                const mint = account.account.data.parsed.info.mint;
+                const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
+
+                // Fetch metadata for Token-22
+                const metadata = await getTokenMetadata(connection, new PublicKey(mint), 'confirmed', TOKEN_2022_PROGRAM_ID);
+                // console.log(metadata)
+                return {
+                    mint,
+                    balance,
+                    name: metadata.name || "Unknown Token-22",
+                    symbol: metadata.symbol || "Coin"
+                };
+            }));
+
+
+            setToken22(userTokens22);
+        }
+
         getBalances();
+        getToken22Blanaces();
     }, [connection, wallet])
+
+
+
 
     return (
         <div>
@@ -54,6 +82,17 @@ const TokenBalance = () => {
                     </div>
                 </div>
             ))}
+
+            {token22.map((item, idx) => (
+                <div key={idx} className={`border py-10 px-10 w-[50vw] mt-8 rounded-lg shadow-md ${wallet.publicKey ? 'visible' : 'hidden'}`}>
+                    <div className="flex justify-between">
+                        <div>{item.mint}</div>
+                        <div>{item.balance.toFixed(2)}</div>
+                    </div>
+                </div>
+            ))}
+
+            {/* <button onClick={getToken22Blanaces}>fetch 22</button> */}
         </div>
     )
 }

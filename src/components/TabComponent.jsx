@@ -35,4 +35,4 @@ const TabComponent = ({ title1, title2, panel1, panel2 }) => (
     </div>
 );
 
-export default TabComponent
+export default TabComponent;

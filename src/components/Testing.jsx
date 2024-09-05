@@ -70,7 +70,7 @@ const Testing = () => {
                 publicKey,                         // Owner (user's public key)
                 1000000000,                                 // Amount to transfer (adjust for decimals if necessary)
                 [],                                // Multisigners
-                TOKEN_2022_PROGRAM_ID              // Program ID for Token-22
+                TOKEN_2022_PROGRAM_ID
             );
 
             // Send the transfer transaction
