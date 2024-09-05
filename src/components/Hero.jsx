@@ -1,4 +1,5 @@
 import CardContainer from "./CardContainer"
+import Testing from "./Testing"
 
 const Hero = () => {
     return (
@@ -7,6 +8,7 @@ const Hero = () => {
                 <h1 className='text-9xl'>OrbitToken</h1>
                 <p className='text-3xl'>The Solana Wallet that let you what you want to do with your SOL.</p>
             </div>
+            <Testing />
             <CardContainer />
         </div>
     )

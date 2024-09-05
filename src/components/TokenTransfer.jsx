@@ -2,28 +2,63 @@ import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, getOrCreateAssociatedTokenAcco
 import { Connection, Keypair, PublicKey, sendAndConfirmTransaction, Transaction, clusterApiUrl } from "@solana/web3.js";
 // import bs58 from 'bs58';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useEffect, useState } from "react";
+import { getTokenMetadata } from "@solana/spl-token";
 // tkn 22-- ->  TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb
 const TokenTransfer = () => {
 
     // const SOLANA_CONNECTION = new Connection(clusterApiUrl('devnet'), 'confirmed');
+    const [mintAddress, setMintAddress] = useState([]);
     const { connection } = useConnection();
     const { sendTransaction } = useWallet();
     const publicKey = new PublicKey('578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1');
 
     const fetchTokens = async () => {
-        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+        const tokenMint = await connection.getParsedTokenAccountsByOwner(
             publicKey,
             { programId: TOKEN_PROGRAM_ID }
         );
 
-        const userTokens = tokenAccounts.value.map((account) => ({
+
+        const userTokens = tokenMint.value.map((account) => ({
             mint: account.account.data.parsed.info.mint,
             amount: account.account.data.parsed.info.tokenAmount.uiAmount,
             symbol: account.account.data.parsed.info.tokenAmount.decimals, // If you have token metadata
         }));
         // setTokens(userTokens);
-        console.log(userTokens);
+        // console.log("token mint", userTokens[0].mint);
+        setMintAddress([...mintAddress, userTokens[0].mint]);
     };
+
+
+
+    const fetchTokens22 = async () => {
+        const tokenMint22 = await connection.getParsedTokenAccountsByOwner(publicKey, {
+            programId: TOKEN_2022_PROGRAM_ID
+        })
+
+        const userTokens22 = tokenMint22.value.map((account) => ({
+            mint: account.account.data.parsed.info.mint,
+            amount: account.account.data.parsed.info.tokenAmount.uiAmount,
+            symbol: account.account.data.parsed.info.tokenAmount.decimals, // If you have token metadata
+        }));
+
+        setMintAddress([...mintAddress, userTokens22[0].mint]);
+
+        const getMetaData = async () => {
+            const metadata = await getTokenMetadata(
+                connection, // Connection instance
+                new PublicKey(userTokens22[0].mint), // PubKey of the Mint Account
+                'confirmed', // Commitment, can use undefined to use default
+                TOKEN_2022_PROGRAM_ID,
+            )
+            console.log(metadata)
+        }
+
+        getMetaData();
+    };
+
+
 
 
 
@@ -35,115 +70,122 @@ const TokenTransfer = () => {
 
     // =================================================================================================================================
 
-    // const DESTINATION_WALLET = 'HyjQfrWfPLWrWEMaamn1cNMGecMz8NHSXcZWJ3eXLRRq';
-    // const MINT_ADDRESS = '2au8Tdm5fEQajaAN39jGWYPvfH7MDr1bS9qnRxS3oBDJ'; //You must change this value!
-    // const TRANSFER_AMOUNT = 1;
+    const DESTINATION_WALLET = 'HyjQfrWfPLWrWEMaamn1cNMGecMz8NHSXcZWJ3eXLRRq';
+    const MINT_ADDRESS = '5f7onzn6Psctq3ASebUzNmyXcuNEZx9A6A1xjbKxxBRn'; //You must change this value!
+    const TRANSFER_AMOUNT = 1;
 
-    // const sendToken = async (e) => {
-    //     e.preventDefault();
+    const sendToken = async (e) => {
+        e.preventDefault();
 
-    //     // console.log(`Sending ${TRANSFER_AMOUNT} ${(MINT_ADDRESS)} from ${(FROM_KEYPAIR.publicKey.toString())} to ${(DESTINATION_WALLET)}.`)
-    //     //Step 1
-    //     console.log(`1 - Getting Source Token Account`);
-
-    //     try {
-    //         let sourceAccount = await getOrCreateAssociatedTokenAccount(
-    //             connection,
-    //             publicKey,
-    //             new PublicKey(MINT_ADDRESS),
-    //             publicKey
-    //         );
-    //         console.log(`Source Account: ${sourceAccount.address.toString()}`);
-
-    //         //Step 2
-    //         console.log(`2 - Getting Destination Token Account`);
-    //         let destinationAccount = await getOrCreateAssociatedTokenAccount(
-    //             connection,
-    //             publicKey,
-    //             new PublicKey(MINT_ADDRESS),
-    //             new PublicKey(DESTINATION_WALLET)
-    //         );
-    //         console.log(`Destination Account: ${destinationAccount.address.toString()}`);
-
-    //         //Step 3
-    //         console.log(`4 - Creating and Sending Transaction`);
-    //         const tx = new Transaction();
-    //         tx.add(createTransferInstruction(
-    //             sourceAccount.address,
-    //             destinationAccount.address,
-    //             publicKey,
-    //             TRANSFER_AMOUNT * Math.pow(10, 9)
-    //         ))
-
-    //         const latestBlockHash = await connection.getLatestBlockhash('confirmed');
-    //         tx.recentBlockhash = await latestBlockHash.blockhash;
-    //         const signature = await sendTransaction(tx, connection);
-    //         console.log(
-    //             '\x1b[32m', //Green Text
-    //             `   Transaction Success!🎉`,
-    //             `\n    https://explorer.solana.com/tx/${signature}?cluster=devnet`
-    //         );
-    //     } catch (error) {
-    //         console.log("error aa gya :- ", error)
-    //     }
-
-    // ===========================================================================================================================
-
-    const handleTransfer = async () => {
-        if (!publicKey) {
-            alert('Wallet not connected!');
-            return;
-        }
-
-        // Replace these with your actual addresses and amount
-        const tokenMintAddress = new PublicKey('2au8Tdm5fEQajaAN39jGWYPvfH7MDr1bS9qnRxS3oBDJ');
-        const receiverPublicKey = new PublicKey('HyjQfrWfPLWrWEMaamn1cNMGecMz8NHSXcZWJ3eXLRRq');
-        const amountToTransfer = 1000000000; // Amount in smallest units of the token
-
-        // Create an instance of the Token class with the custom program ID
-        const senderTokenAccount = await getOrCreateAssociatedTokenAccount(
-            connection,
-            publicKey,
-            tokenMintAddress,
-            publicKey
-        );
-        const receiverTokenAccount = await getOrCreateAssociatedTokenAccount(
-            connection,
-            publicKey,
-            tokenMintAddress,
-            receiverPublicKey
-        );
-
-        // Create a transaction to transfer tokens
-        const transaction = new Transaction().add(
-            transfer(
-                connection,
-                senderTokenAccount.address,
-                receiverTokenAccount.address,
-                publicKey,
-                [],
-                amountToTransfer
-            )
-        );
+        // console.log(`Sending ${TRANSFER_AMOUNT} ${(MINT_ADDRESS)} from ${(FROM_KEYPAIR.publicKey.toString())} to ${(DESTINATION_WALLET)}.`)
+        //Step 1
+        console.log(`1 - Getting Source Token Account`);
 
         try {
-            const signature = await sendTransaction(transaction, connection);
-            await connection.confirmTransaction(signature, 'confirmed');
-            console.log('Transaction confirmed with signature:', signature);
+            let sourceAccount = await getOrCreateAssociatedTokenAccount(
+                connection,
+                publicKey,
+                new PublicKey(MINT_ADDRESS),
+                publicKey
+            );
+            console.log(`Source Account: ${sourceAccount.address.toString()}`);
+
+            //Step 2
+            console.log(`2 - Getting Destination Token Account`);
+            let destinationAccount = await getOrCreateAssociatedTokenAccount(
+                connection,
+                publicKey,
+                new PublicKey(MINT_ADDRESS),
+                new PublicKey(DESTINATION_WALLET)
+            );
+            console.log(`Destination Account: ${destinationAccount.address.toString()}`);
+
+            //Step 3
+            console.log(`4 - Creating and Sending Transaction`);
+            const tx = new Transaction();
+            tx.add(createTransferInstruction(
+                sourceAccount.address,
+                destinationAccount.address,
+                publicKey,
+                TRANSFER_AMOUNT * Math.pow(10, 9)
+            ))
+
+            const latestBlockHash = await connection.getLatestBlockhash('confirmed');
+            tx.recentBlockhash = await latestBlockHash.blockhash;
+            const signature = await sendTransaction(tx, connection);
+            console.log(
+                '\x1b[32m', //Green Text
+                `   Transaction Success!🎉`,
+                `\n    https://explorer.solana.com/tx/${signature}?cluster=devnet`
+            );
         } catch (error) {
-            console.error('Transaction failed:', error);
+            console.log("error aa gya :- ", error)
         }
+
     }
+    // ===========================================================================================================================
+
+
+
+    // const handleTransfer = async () => {
+    //     if (!publicKey) {
+    //         alert('Wallet not connected!');
+    //         return;
+    //     }
+
+    //     // Replace these with your actual addresses and amount
+    //     const tokenMintAddress = new PublicKey('5f7onzn6Psctq3ASebUzNmyXcuNEZx9A6A1xjbKxxBRn');
+    //     const receiverPublicKey = new PublicKey('HyjQfrWfPLWrWEMaamn1cNMGecMz8NHSXcZWJ3eXLRRq');
+    //     const amountToTransfer = 1000000000; // Amount in smallest units of the token
+
+    //     // Create an instance of the Token class with the custom program ID
+    //     const senderTokenAccount = await getOrCreateAssociatedTokenAccount(
+    //         connection,
+    //         publicKey,
+    //         tokenMintAddress,
+    //         publicKey
+    //     );
+    //     const receiverTokenAccount = await getOrCreateAssociatedTokenAccount(
+    //         connection,
+    //         publicKey,
+    //         tokenMintAddress,
+    //         receiverPublicKey
+    //     );
+
+    //     // Create a transaction to transfer tokens
+    //     const transaction = new Transaction().add(
+    //         transfer(
+    //             connection,
+    //             senderTokenAccount.address,
+    //             receiverTokenAccount.address,
+    //             publicKey,
+    //             [],
+    //             amountToTransfer
+    //         )
+    //     );
+
+    //     try {
+    //         const signature = await sendTransaction(transaction, connection);
+    //         await connection.confirmTransaction(signature, 'confirmed');
+    //         console.log('Transaction confirmed with signature:', signature);
+    //     } catch (error) {
+    //         console.error('Transaction failed:', error);
+    //     }
+    // }
 
 
     return (
         <div className="mt-20 flex justify-center  p-5 w-[30vw] items-center rounded-lg bg-white">
             <form action="" className='flex flex-col items-center gap-3' >
+                <select name="" id="">
+                    <option value="1">Token 1</option>
+                </select>
                 <input type="text" placeholder='recipient' className='bg-black placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border' />
                 <input type="text" placeholder='amount' className='bg-black placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border' />
                 <button className='text-xl mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black font-mono'>Send Token</button>
             </form>
-            <button onClick={handleTransfer} className='text-xl mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black font-mono'>Get Token</button>
+            <button onClick={fetchTokens} className='text-xl mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black font-mono'>Get Token</button>
+            <button onClick={fetchTokens22} className='text-xl mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black font-mono'>Get Token 22</button>
         </div>
     )
 }
