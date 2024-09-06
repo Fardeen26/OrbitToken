@@ -19,6 +19,7 @@
 import Hero from "./components/Hero"
 import Navbar from "./components/Navbar"
 import CardContainer from "./components/CardContainer"
+import Footer from "./components/Footer"
 
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
       <Navbar />
       <hr />
       <Hero />
+      <hr />
+      <Footer />
     </div>
   )
 }
