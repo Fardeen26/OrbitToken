@@ -13,7 +13,7 @@ const Navbar = () => {
                     </div>
                     <div className="flex gap-20 align-bottom text-end">
                         <div className="align-bottom">
-                            <Link to={'/token'} className="text-xl font-semibold tracking-tight">Token</Link>
+                            <Link to={'/token'} className="text-xl font-semibold tracking-tight">Tokens</Link>
                         </div>
                         <div className="">
                             <Link to={'/transaction'} className="text-xl font-semibold tracking-tight">Transaction</Link>

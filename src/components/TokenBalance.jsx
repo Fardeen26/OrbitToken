@@ -3,20 +3,18 @@ import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, AccountLayout } from "@solana/
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
-// TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA -> token program id
-// HdxKHA1ErFUs7k4BrYuE59nHNmjLubhuF3jCsZ7dAbQw -> token mint
-// 5Sxnh7cKqVLXRnz3FmVypgRMvzT6JxioXMy3WUqWMUUe -> token mint
-
 
 const TokenBalance = () => {
     const [token, setToken] = useState([]);
     const [token22, setToken22] = useState([])
+    const [isFetching, setIsFetching] = useState(false)
     const { connection } = useConnection();
     const wallet = useWallet();
 
     useEffect(() => {
         const getBalances = async () => {
             if (wallet.publicKey) {
+                setIsFetching(true)
                 try {
                     const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
                         programId: TOKEN_PROGRAM_ID,
@@ -27,42 +25,45 @@ const TokenBalance = () => {
                             const balanceBigInt = accountData.amount;
                             const balance = Number(balanceBigInt) / 1e9;
                             const mintAddress = new PublicKey(accountData.mint).toString();
-                            return { mintAddress, balance };
+                            const name = 'Unknown Token';
+                            const symbol = 'UNK';
+                            return { mintAddress, balance, name, symbol };
                         } catch (error) {
                             console.error("Error decoding account data:", error);
                             return null;
                         }
                     }).filter(token => token !== null);
 
-                    // console.log("tokens", tokens)
                     setToken(tokens)
+                    setIsFetching(false)
 
                 } catch (error) {
                     console.error("Error fetching balances:", error);
+                    setIsFetching(false)
                 }
             }
         };
 
         const getToken22Blanaces = async () => {
             if (!wallet.publicKey) return;
+            setIsFetching(true)
             const tokenMint22 = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_2022_PROGRAM_ID });
             const userTokens22 = await Promise.all(tokenMint22.value.map(async (account) => {
-                const mint = account.account.data.parsed.info.mint;
+                const mintAddress = account.account.data.parsed.info.mint;
                 const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
 
                 // Fetch metadata for Token-22
-                const metadata = await getTokenMetadata(connection, new PublicKey(mint), 'confirmed', TOKEN_2022_PROGRAM_ID);
-                // console.log(metadata)
+                const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
                 return {
-                    mint,
+                    mintAddress,
                     balance,
                     name: metadata.name || "Unknown Token-22",
-                    symbol: metadata.symbol || "Coin"
+                    symbol: metadata.symbol || "UNK"
                 };
             }));
 
-
             setToken22(userTokens22);
+            setIsFetching(false)
         }
 
         getBalances();
@@ -73,26 +74,58 @@ const TokenBalance = () => {
 
 
     return (
-        <div>
-            {token.map((item, idx) => (
-                <div key={idx} className={`border py-10 px-10 w-[50vw] mt-8 rounded-lg shadow-md ${wallet.publicKey ? 'visible' : 'hidden'}`}>
-                    <div className="flex justify-between">
-                        <div>{item.mintAddress}</div>
-                        <div>{item.balance}</div>
-                    </div>
-                </div>
-            ))}
+        <div className="">
+            {
+                !wallet.publicKey && <p className="mt-12 text-center">No Wallet Selected</p>
+            }
+            {
+                isFetching ? <p className="mt-12">Fetching...</p> : (
+                    <div className="w-[50vw] mt-12 flex flex-col gap-5">
+                        {token.map((token, idx) => (
+                            <div key={token.mintAddress} className="w-full rounded-xl flex justify-between p-4 shadow-lg items-center border">
+                                <div className="flex gap-4 items-center">
+                                    <div className="rounded-full px-4 h-14 w-14 bg-gray-200 flex justify-center items-center font-semibold text-sm">{token.mintAddress.substring(0, 5)}</div>
+                                    <div className="w-full flex-grow">
+                                        <p className="text-lg">{token.name}</p>
+                                        <p className="w-4/6 md:hidden text-sm font-thin overflow-clip text-ellipsis">{token.mintAddress.substring(0, 40)}</p>
+                                        <p className="hidden md:block w-full text-sm font-thin">{token.mintAddress}</p>
+                                        <p className="md:hidden">
+                                            {Number.isInteger(token.balance) ? token.balance : token.balance.toFixed(2)} {token.symbol.toUpperCase()}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="hidden md:flex gap-4 items-center">
+                                    <p>
+                                        {Number.isInteger(token.balance) ? token.balance : token.balance.toFixed(2)} {token.symbol.toUpperCase()}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
 
-            {token22.map((item, idx) => (
-                <div key={idx} className={`border py-10 px-10 w-[50vw] mt-8 rounded-lg shadow-md ${wallet.publicKey ? 'visible' : 'hidden'}`}>
-                    <div className="flex justify-between">
-                        <div>{item.mint}</div>
-                        <div>{item.balance.toFixed(2)}</div>
+                        {token22.map((token, idx) => (
+                            <div key={token.mintAddress} className="w-full rounded-xl flex justify-between px-4 py-4 shadow-xl items-center border">
+                                <div className="flex gap-4 items-center">
+                                    <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s' alt="token-image" className="w-14 h-14 rounded-full" />
+                                    <div className="w-full flex-grow">
+                                        <p className="text-lg">{token.name}</p>
+                                        <p className="w-4/6 md:hidden text-sm font-thin overflow-clip text-ellipsis">{token.mintAddress.substring(0, 40)}</p>
+                                        <p className="hidden md:block w-full text-sm font-thin">{token.mintAddress}</p>
+                                        <p className="md:hidden">
+                                            {Number.isInteger(token.balance) ? token.balance : token.balance.toFixed(2)} {token.symbol.toUpperCase()}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="hidden md:flex gap-4 items-center">
+                                    <p>
+                                        {Number.isInteger(token.balance) ? token.balance : token.balance.toFixed(2)} {token.symbol.toUpperCase()}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                </div>
-            ))}
+                )
+            }
 
-            {/* <button onClick={getToken22Blanaces}>fetch 22</button> */}
         </div>
     )
 }
