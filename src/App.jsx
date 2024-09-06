@@ -18,15 +18,17 @@
 
 import Hero from "./components/Hero"
 import Navbar from "./components/Navbar"
+import CardContainer from "./components/CardContainer"
 
 
 function App() {
 
   return (
     // <WalletContextProvider>
-    <div className="">
+    <div className="overflow-hidden">
       <Navbar />
       <Hero />
+      {/* <CardContainer /> */}
     </div>
     // </WalletContextProvider>
   )

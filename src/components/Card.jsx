@@ -1,12 +1,13 @@
 import { Card as TCard, CardHeader, CardBody, Image } from "@nextui-org/react";
 
-export default function Card() {
+export default function Card({ title }) {
     return (
-        <TCard className="py-4">
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                <p className="text-tiny uppercase font-bold">Daily Mix</p>
-                <small className="text-default-500">12 Tracks</small>
-                <h4 className="font-bold text-large">Frontend Radio</h4>
+
+        <TCard className="py-4 mt-5">
+            <CardHeader className="pb-0 pt-2 px-4 flex-col">
+                <p className="text-tiny uppercase font-bold">{title}</p>
+                {/* <small className="text-default-500">12 Tracks</small>
+                <h4 className="font-bold text-large">Frontend Radio</h4> */}
             </CardHeader>
             <CardBody className="overflow-visible py-2">
                 <Image
