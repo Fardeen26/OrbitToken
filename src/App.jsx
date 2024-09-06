@@ -24,13 +24,11 @@ import CardContainer from "./components/CardContainer"
 function App() {
 
   return (
-    // <WalletContextProvider>
     <div className="overflow-hidden">
       <Navbar />
+      <hr />
       <Hero />
-      {/* <CardContainer /> */}
     </div>
-    // </WalletContextProvider>
   )
 }
 

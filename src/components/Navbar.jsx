@@ -2,29 +2,36 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import WalletContextProvider from './ConnectionProvider'
 import { Link } from 'react-router-dom'
 
+
 const Navbar = () => {
     return (
-        <div className="p-5">
+        <div className="p-3">
             <nav className="mx-auto">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-baseline">
                     <div className="">
-                        <Link to={'/'} className="text-4xl font-mono font-bold">OrbitToken</Link>
+                        <Link to={'/'} className="text-3xl font-bold tracking-tighter">OrbitToken</Link>
                     </div>
-                    <div className="flex gap-10">
-                        <div className="">
-                            <Link to={'/token'} className="text-xl font-serif">Token</Link>
+                    <div className="flex gap-20 align-bottom text-end">
+                        <div className="align-bottom">
+                            <Link to={'/token'} className="text-xl font-semibold tracking-tight">Token</Link>
                         </div>
                         <div className="">
-                            <Link to={'/transaction'} className="text-xl font-serif">Transaction</Link>
+                            <Link to={'/transaction'} className="text-xl font-semibold tracking-tight">Transaction</Link>
                         </div>
                         <div className="">
-                            <Link to={'/account'} className="text-xl font-serif">Account</Link>
+                            <Link to={'/account'} className="text-xl font-semibold tracking-tight">Account</Link>
                         </div>
                     </div>
                     <div className="">
-
                         <WalletContextProvider>
-                            <WalletMultiButton />
+                            <WalletMultiButton style={{
+                                backgroundColor: '#000',
+                                color: 'white',
+                                padding: '2px 18px',
+                                borderRadius: '6px',
+                                fontSize: '14px',
+                                fontWeight: 'bold',
+                            }} />
                         </WalletContextProvider>
                     </div>
                 </div>
