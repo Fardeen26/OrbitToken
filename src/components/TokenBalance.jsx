@@ -54,6 +54,7 @@ const TokenBalance = () => {
 
                 // Fetch metadata for Token-22
                 const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
+                console.log("User Metadata :- ", metadata);
                 return {
                     mintAddress,
                     balance,
@@ -62,6 +63,7 @@ const TokenBalance = () => {
                 };
             }));
 
+            console.log("User token :- ", userTokens22);
             setToken22(userTokens22);
             setIsFetching(false)
         }

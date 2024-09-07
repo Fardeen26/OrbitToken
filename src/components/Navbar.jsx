@@ -41,3 +41,22 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+
+// {
+//     "name": "ZEHAN",
+//         "symbol": "BSDK",
+//             "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsdE5u5700W7v5lboNyW9SZLtctmju7sTpRw&s",
+//                 "description": "Agar danish bhai jinda hote na toh kisi ka naam hi nhi leta",
+//                     "tags": [
+//                         "Meme",
+//                         "FanToken",
+//                         "Airdrop",
+//                         "Tokenization",
+//                         "RWA"
+//                     ],
+//                         "creator": {
+//         "name": "SoLauncher Tool",
+//             "site": "https://solauncher.org"
+//     }
+// }
