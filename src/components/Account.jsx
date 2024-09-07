@@ -1,11 +1,13 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 
 const Account = () => {
     const [balance, setBalance] = useState(0);
     const [currentPublicKey, setCurrentPublicKey] = useState(null);
     const [isFetching, setIsFetching] = useState(false);
+    const [isAirdropping, setIsAirdropping] = useState(false)
     const { connection } = useConnection();
     const { publicKey, connected } = useWallet();
 
@@ -17,7 +19,7 @@ const Account = () => {
                 setBalance(walletBalance);
                 setIsFetching(false)
             } catch (error) {
-                console.error("Failed to fetch balance:", error);
+                toast.error(error.message);
                 setBalance(0);
                 setIsFetching(false)
             }
@@ -27,10 +29,19 @@ const Account = () => {
     };
 
     const getAirdrop = async () => {
-        if (!publicKey) return alert('Connect you wallet');
-        await connection.requestAirdrop(publicKey, 1 * LAMPORTS_PER_SOL);
-        const walletBalance = await connection.getBalance(publicKey) / 1000000000;
-        setBalance(walletBalance)
+        if (!publicKey) return toast.error('Wallet is not connected');
+        try {
+            setIsAirdropping(true)
+            await connection.requestAirdrop(publicKey, 1 * LAMPORTS_PER_SOL);
+            // const walletBalance = await connection.getBalance(publicKey) / 1000000000;
+            toast.success('1 SOL is successfully airdropped');
+            setBalance(await connection.getBalance(pubKey) / 1000000000)
+            setIsAirdropping(false)
+        } catch (error) {
+            toast.error(error.message)
+            setIsAirdropping(false)
+        }
+
     }
 
     useEffect(() => {
@@ -50,10 +61,11 @@ const Account = () => {
 
     return (
         <div className="flex flex-col items-center justify-center p-5 mt-12">
+            <Toaster position='bottom-right' />
             {
-                isFetching ? 'Fetching...' : (<h1 className="text-4xl font-mono font-extrabold">{balance > 0 ? `${balance} SOL` : !publicKey ? 'Connect Your Wallet' : ''}</h1>)
+                isFetching ? 'Fetching...' : (<h1 className="text-4xl font-bold tracking-tighter">{balance > 0 ? `${balance} SOL` : !publicKey ? <span className="text-2xl font-bold tracking-tighter">Wallet not connected</span> : ''}</h1>)
             }
-            <button className='text-xl mt-5 px-3 py-2 w-72 bg-[#512DA8] text-white rounded hover:bg-black' onClick={getAirdrop}>Get Airdrop</button>
+            <button className='text-xl mt-5 px-3 py-2 w-72 bg-[#512DA8] text-white rounded hover:bg-black' onClick={getAirdrop}> {isAirdropping ? 'Requesting...' : 'Get Airdrop'}</button>
         </div>
     );
 };

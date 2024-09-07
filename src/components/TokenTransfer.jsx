@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, getOrCreateAssociatedTokenAccount, createTransferInstruction, getTokenMetadata } from "@solana/spl-token";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Toaster, toast } from 'sonner'
 
 const TokenTransfer = () => {
     const [normalTokens, setNormalTokens] = useState([]);
@@ -14,7 +15,6 @@ const TokenTransfer = () => {
 
     const { connection } = useConnection();
     const { publicKey, sendTransaction } = useWallet();
-
     useEffect(() => {
         if (publicKey) {
             if (selectedTokenType === 'normal') {
@@ -22,9 +22,6 @@ const TokenTransfer = () => {
             } else if (selectedTokenType === 'token22') {
                 fetchTokens22();
             }
-        } else {
-            // if (!publicKey) alert('Connect Your Wallet');
-            console.log('cc')
         }
     }, [selectedTokenType]);
 
@@ -63,8 +60,9 @@ const TokenTransfer = () => {
     };
 
     const sendNormalToken = async () => {
-        if (!publicKey) return alert('Connect your wallet');
-        if (!recipient || !amount) return alert('Invalid Credantiles');
+        if (!publicKey) return toast.error('Wallet is not connected');
+        if (!recipient || !amount) return toast.error('Provide the correct credentials')
+
         setIsSending(true)
         try {
             let sourceAccount = await getOrCreateAssociatedTokenAccount(
@@ -116,23 +114,22 @@ const TokenTransfer = () => {
                 amount * Math.pow(10, 9)
             );
 
-            // Step 7: Build and send the transfer transaction
             const transferTransaction = new Transaction().add(transferInstruction);
             const latestBlockHash = await connection.getLatestBlockhash('confirmed');
             transferTransaction.recentBlockhash = latestBlockHash.blockhash;
             const signature = await sendTransaction(transferTransaction, connection);
 
-            console.log(`Transaction Success! 🎉 https://explorer.solana.com/tx/${signature}?cluster=devnet`);
+            toast.success(`Transaction is Successful! ${signature}`)
             setIsSending(false)
         } catch (error) {
+            toast.error(error.message)
             setIsSending(false)
-            console.log("An error occurred: ", error);
         }
     };
 
     const sendToken22 = async () => {
-        if (!publicKey) return alert('Connect your wallet');
-        if (!recipient || !amount) return alert('Invalid Credantiles');
+        if (!publicKey) return toast.error('Wallet is not connected');
+        if (!recipient || !amount || amo) return toast.error('Provide the correct credentials')
         setIsSending(true)
         try {
             const sourceTokenAccounts = await connection.getTokenAccountsByOwner(
@@ -188,18 +185,21 @@ const TokenTransfer = () => {
 
             const transaction = new Transaction().add(transferInstruction);
             const signature = await sendTransaction(transaction, connection);
-            console.log(`Transaction Success! 🎉 https://explorer.solana.com/tx/${signature}?cluster=devnet`);
+            toast.success(`Transaction is Successful! ${signature}`)
             setIsSending(false)
         } catch (error) {
+            toast.error(error.message)
             setIsSending(false)
-            console.error('Error transferring Token-22:', error);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedToken) {
-            alert("Please select a token.");
+        if (!publicKey) {
+            return toast.error("Please connect to a wallet first")
+        }
+        if (publicKey && !selectedToken) {
+            toast.error('Please select a token')
             return;
         }
         if (selectedTokenType === 'normal') {
@@ -211,6 +211,7 @@ const TokenTransfer = () => {
 
     return (
         <div className="mt-20 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
+            <Toaster position="bottom-right" />
             <form onSubmit={handleSubmit} className='flex flex-col items-center gap-3'>
                 <select value={selectedTokenType} onChange={(e) => setSelectedTokenType(e.target.value)} className="bg-black text-white px-3 py-2 rounded-lg w-full">
                     <option value="normal">Normal Token</option>

@@ -3,6 +3,7 @@ import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, AccountLayout } from "@solana/
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 
 const TokenBalance = () => {
     const [token, setToken] = useState([]);
@@ -13,72 +14,70 @@ const TokenBalance = () => {
 
     useEffect(() => {
         const getBalances = async () => {
-            if (wallet.publicKey) {
+            if (!wallet.publicKey) return;
+            try {
                 setIsFetching(true)
-                try {
-                    const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
-                        programId: TOKEN_PROGRAM_ID,
-                    });
-                    const tokens = tokenAccounts.value.map((accountInfo) => {
-                        try {
-                            const accountData = AccountLayout.decode(accountInfo.account.data);
-                            const balanceBigInt = accountData.amount;
-                            const balance = Number(balanceBigInt) / 1e9;
-                            const mintAddress = new PublicKey(accountData.mint).toString();
-                            const name = 'Unknown Token';
-                            const symbol = 'UNK';
-                            return { mintAddress, balance, name, symbol };
-                        } catch (error) {
-                            console.error("Error decoding account data:", error);
-                            return null;
-                        }
-                    }).filter(token => token !== null);
+                const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
+                    programId: TOKEN_PROGRAM_ID,
+                });
+                const tokens = tokenAccounts.value.map((accountInfo) => {
+                    try {
+                        const accountData = AccountLayout.decode(accountInfo.account.data);
+                        const balanceBigInt = accountData.amount;
+                        const balance = Number(balanceBigInt) / 1e9;
+                        const mintAddress = new PublicKey(accountData.mint).toString();
+                        const name = 'Unknown Token';
+                        const symbol = 'UNK';
+                        return { mintAddress, balance, name, symbol };
+                    } catch (error) {
+                        console.error("Error decoding account data:", error);
+                        return null;
+                    }
+                }).filter(token => token !== null);
 
-                    setToken(tokens)
-                    setIsFetching(false)
+                setToken(tokens)
+                setIsFetching(false)
 
-                } catch (error) {
-                    console.error("Error fetching balances:", error);
-                    setIsFetching(false)
-                }
+            } catch (error) {
+                toast.error(error.message)
+                setIsFetching(false)
             }
         };
 
-        const getToken22Blanaces = async () => {
+        const getToken22Balances = async () => {
             if (!wallet.publicKey) return;
-            setIsFetching(true)
-            const tokenMint22 = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_2022_PROGRAM_ID });
-            const userTokens22 = await Promise.all(tokenMint22.value.map(async (account) => {
-                const mintAddress = account.account.data.parsed.info.mint;
-                const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
+            try {
+                setIsFetching(true)
+                const tokenMint22 = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_2022_PROGRAM_ID });
+                const userTokens22 = await Promise.all(tokenMint22.value.map(async (account) => {
+                    const mintAddress = account.account.data.parsed.info.mint;
+                    const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
 
-                // Fetch metadata for Token-22
-                const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
-                console.log("User Metadata :- ", metadata);
-                return {
-                    mintAddress,
-                    balance,
-                    name: metadata.name || "Unknown Token-22",
-                    symbol: metadata.symbol || "UNK"
-                };
-            }));
+                    const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
+                    return {
+                        mintAddress,
+                        balance,
+                        name: metadata.name || "Unknown Token-22",
+                        symbol: metadata.symbol || "UNK"
+                    };
+                }));
 
-            console.log("User token :- ", userTokens22);
-            setToken22(userTokens22);
-            setIsFetching(false)
+                setToken22(userTokens22);
+                setIsFetching(false)
+            } catch (error) {
+                toast.error(error.message)
+            }
         }
 
         getBalances();
-        getToken22Blanaces();
+        getToken22Balances();
     }, [connection, wallet])
 
-
-
-
     return (
-        <div className="">
+        <div>
+            <Toaster position='bottom-right' />
             {
-                !wallet.publicKey && <p className="mt-12 text-center">No Wallet Selected</p>
+                !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
             }
             {
                 isFetching ? <p className="mt-12">Fetching...</p> : (
