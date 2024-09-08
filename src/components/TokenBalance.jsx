@@ -54,11 +54,21 @@ const TokenBalance = () => {
                     const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
 
                     const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
+                    let imageUrl = '';
+                    if (metadata.uri != 'https://cdn.100xdevs.com/metadata.json') {
+                        const responce = await fetch(metadata.uri, {
+                            method: 'GET'
+                        });
+                        const data = await responce.json()
+                        imageUrl = data.image;
+                    }
+
                     return {
                         mintAddress,
                         balance,
                         name: metadata.name || "Unknown Token-22",
-                        symbol: metadata.symbol || "UNK"
+                        symbol: metadata.symbol || "UNK",
+                        image: imageUrl || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s',
                     };
                 }));
 
@@ -106,7 +116,7 @@ const TokenBalance = () => {
                         {token22.map((token) => (
                             <div key={token.mintAddress} className="w-full rounded-xl flex justify-between px-4 py-4 shadow-xl items-center border">
                                 <div className="flex gap-4 items-center">
-                                    <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s' alt="token-image" className="w-14 h-14 rounded-full" />
+                                    <img src={token.image} alt="token-image" className="w-14 h-14 rounded-full" />
                                     <div className="w-full flex-grow">
                                         <p className="text-lg">{token.name}</p>
                                         <p className="w-4/6 md:hidden text-sm font-thin overflow-clip text-ellipsis">{token.mintAddress.substring(0, 40)}</p>

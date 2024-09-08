@@ -50,7 +50,6 @@ const Account = () => {
                 fetchBalance(publicKey);
 
                 const balanceChangeListener = connection.onAccountChange(publicKey, () => {
-                    console.log("changed")
                     fetchBalance(publicKey)
                 });
 

@@ -23,7 +23,7 @@ const TabComponent = ({ title1, title2, title3, panel1, panel2, panel3, storageK
     }, [selectedTabIndex, storageKey]);
 
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center dark:bg-black w-screen">
             <Tabs
                 className="w-full flex flex-col items-center"
                 selectedIndex={selectedTabIndex}

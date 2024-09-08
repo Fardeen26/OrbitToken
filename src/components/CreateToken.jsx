@@ -31,8 +31,6 @@ const CreateToken = () => {
                 additionalMetadata: [],
             };
 
-            console.log("metadata :- ", metadata)
-
             const mintLen = getMintLen([ExtensionType.MetadataPointer]);
             const metadataLen = TYPE_SIZE + LENGTH_SIZE + pack(metadata).length;
 
@@ -66,7 +64,7 @@ const CreateToken = () => {
 
             await wallet.sendTransaction(transaction, connection);
 
-            console.log(`Token mint created at ${mintKeypair.publicKey.toBase58()}`);
+            toast.info(`Token mint created at ${mintKeypair.publicKey.toBase58()}`)
             const associatedToken = getAssociatedTokenAddressSync(
                 mintKeypair.publicKey,
                 wallet.publicKey,
@@ -74,7 +72,7 @@ const CreateToken = () => {
                 TOKEN_2022_PROGRAM_ID,
             );
 
-            console.log(associatedToken.toBase58());
+            toast.info(associatedToken.toBase58())
 
             const transaction2 = new Transaction().add(
                 createAssociatedTokenAccountInstruction(
@@ -91,11 +89,8 @@ const CreateToken = () => {
 
             setIsCreating(false)
             toast.success("Token is created Successfully!")
-            console.log("Associated account created and minted!")
-            console.log("Token Minted Successfully!")
         } catch (error) {
             setIsCreating(false)
-            console.log("An error occurred", error)
             toast.error(error.message);
         }
 
