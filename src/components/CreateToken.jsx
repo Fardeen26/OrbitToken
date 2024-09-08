@@ -1,8 +1,150 @@
-import React from 'react'
+import { useState } from "react";
+import { TOKEN_2022_PROGRAM_ID, createMintToInstruction, createAssociatedTokenAccountInstruction, getMintLen, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, TYPE_SIZE, LENGTH_SIZE, ExtensionType, getAssociatedTokenAddressSync } from "@solana/spl-token"
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
+import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
+import { Toaster, toast } from "sonner";
+
+
 
 const CreateToken = () => {
+    const [tokenName, setTokenName] = useState('')
+    const [tokenSymbol, setTokenSymbol] = useState('')
+    const [tokenImageUrl, setTokenImageUrl] = useState('')
+    const [tokenSupply, setTokenSupply] = useState(0)
+    const [tokenDecimal, setTokenDecimal] = useState(0)
+    const [isCreating, setIsCreating] = useState(false);
+    const { connection } = useConnection();
+    const wallet = useWallet();
+
+    async function buildToken(e) {
+        e.preventDefault();
+        if (!wallet.publicKey) return toast.error("Please connect to a wallet first")
+        if (!tokenName || !tokenSymbol || !tokenImageUrl || !tokenDecimal || !tokenSupply) return toast.error("Provide the correct credentials")
+
+        try {
+            setIsCreating(true);
+            const mintKeypair = Keypair.generate();
+            const metadata = {
+                mint: mintKeypair.publicKey,
+                name: tokenName,
+                symbol: tokenSymbol,
+                uri: 'https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json',
+                additionalMetadata: [],
+            };
+
+            console.log("metadata :- ", metadata)
+
+            const mintLen = getMintLen([ExtensionType.MetadataPointer]);
+            const metadataLen = TYPE_SIZE + LENGTH_SIZE + pack(metadata).length;
+
+            const lamports = await connection.getMinimumBalanceForRentExemption(mintLen + metadataLen);
+
+            const transaction = new Transaction().add(
+                SystemProgram.createAccount({
+                    fromPubkey: wallet.publicKey,
+                    newAccountPubkey: mintKeypair.publicKey,
+                    space: mintLen,
+                    lamports,
+                    programId: TOKEN_2022_PROGRAM_ID,
+                }),
+                createInitializeMetadataPointerInstruction(mintKeypair.publicKey, wallet.publicKey, mintKeypair.publicKey, TOKEN_2022_PROGRAM_ID),
+                createInitializeMintInstruction(mintKeypair.publicKey, tokenDecimal, wallet.publicKey, null, TOKEN_2022_PROGRAM_ID),
+                createInitializeInstruction({
+                    programId: TOKEN_2022_PROGRAM_ID,
+                    mint: mintKeypair.publicKey,
+                    metadata: mintKeypair.publicKey,
+                    name: metadata.name,
+                    symbol: metadata.symbol,
+                    uri: metadata.uri,
+                    mintAuthority: wallet.publicKey,
+                    updateAuthority: wallet.publicKey,
+                }),
+            );
+
+            transaction.feePayer = wallet.publicKey;
+            transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+            transaction.partialSign(mintKeypair);
+
+            await wallet.sendTransaction(transaction, connection);
+
+            console.log(`Token mint created at ${mintKeypair.publicKey.toBase58()}`);
+            const associatedToken = getAssociatedTokenAddressSync(
+                mintKeypair.publicKey,
+                wallet.publicKey,
+                false,
+                TOKEN_2022_PROGRAM_ID,
+            );
+
+            console.log(associatedToken.toBase58());
+
+            const transaction2 = new Transaction().add(
+                createAssociatedTokenAccountInstruction(
+                    wallet.publicKey,
+                    associatedToken,
+                    wallet.publicKey,
+                    mintKeypair.publicKey,
+                    TOKEN_2022_PROGRAM_ID,
+                ),
+                createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey, tokenSupply * Math.pow(10, tokenDecimal), [], TOKEN_2022_PROGRAM_ID)
+            );
+
+            await wallet.sendTransaction(transaction2, connection);
+
+            setIsCreating(false)
+            toast.success("Token is created Successfully!")
+            console.log("Associated account created and minted!")
+            console.log("Token Minted Successfully!")
+        } catch (error) {
+            setIsCreating(false)
+            console.log("An error occurred", error)
+            toast.error(error.message);
+        }
+
+    }
+
     return (
-        <div>CreateToken</div>
+        <div className="mt-20 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
+            <Toaster position="bottom-right" />
+            <form onSubmit={buildToken} className='flex flex-col items-center gap-3'>
+                <input
+                    type="text"
+                    value={tokenName}
+                    onChange={(e) => setTokenName(e.target.value)}
+                    placeholder='Token name'
+                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                />
+                <input
+                    type="text"
+                    value={tokenSymbol}
+                    onChange={(e) => setTokenSymbol(e.target.value)}
+                    placeholder='Token symbol'
+                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                />
+                <input
+                    type="text"
+                    value={tokenImageUrl}
+                    onChange={(e) => setTokenImageUrl(e.target.value)}
+                    placeholder='Token image url'
+                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                />
+                <input
+                    value={tokenDecimal}
+                    onChange={(e) => setTokenDecimal(e.target.value)}
+                    placeholder='Decimals'
+                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                    type="number"
+                />
+                <input
+                    value={tokenSupply}
+                    onChange={(e) => setTokenSupply(e.target.value)}
+                    placeholder="Token initial supply"
+                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full"
+                    type="number"
+                />
+                <button type="submit" className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isCreating ? 'Creating...' : 'Create Token'} </button>
+            </form>
+        </div>
     )
 }
 

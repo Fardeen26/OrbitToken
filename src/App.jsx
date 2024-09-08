@@ -5,7 +5,7 @@ import WalletContextProvider from './components/ConnectionProvider'
 
 function App() {
   return (
-    <div className="overflow-hidden">
+    <div>
       <WalletContextProvider>
         <Navbar />
         <hr />

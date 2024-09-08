@@ -10,7 +10,7 @@ const CustomTab = ({ children, ...otherProps }) => (
 
 CustomTab.tabsRole = 'Tab';
 
-const TabComponent = ({ title1, title2, panel1, panel2, panel3, storageKey }) => {
+const TabComponent = ({ title1, title2, title3, panel1, panel2, panel3, storageKey }) => {
     const [selectedStorageKey, setSelectedStorageKey] = useState(storageKey)
     const initialTabIndex = localStorage.getItem(storageKey)
         ? parseInt(localStorage.getItem(storageKey), 10)
@@ -48,7 +48,7 @@ const TabComponent = ({ title1, title2, panel1, panel2, panel3, storageKey }) =>
                     </span>
                     <CustomTab className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>
                         <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 2 ? "text-[#6a2aff]" : ""}`}>
-                            {title2}
+                            {title3}
                         </span>
                     </CustomTab>
                 </TabList>

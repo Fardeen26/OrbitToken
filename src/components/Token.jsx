@@ -9,6 +9,7 @@ const Token = () => {
             <TabComponent
                 title1={"Token Balance"}
                 title2={"Transfer Token"}
+                title3={"Create Token"}
                 panel1={<TokenBalance />}
                 panel2={<TokenTransfer />}
                 panel3={<CreateToken />}
