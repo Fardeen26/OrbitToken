@@ -90,7 +90,7 @@ const TokenBalance = () => {
                 !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
             }
             {
-                !token.length && !token22.length && <p className="mt-12 text-center">there are no custom tokens present in your wallet</p>
+                wallet.publicKey && !token.length && !token22.length && <p className="mt-12 text-center">there are no custom tokens present in your wallet</p>
             }
             {
                 token.length && token22.length && isFetching ? <p className="mt-12">Fetching...</p> : (

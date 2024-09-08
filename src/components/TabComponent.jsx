@@ -29,25 +29,25 @@ const TabComponent = ({ title1, title2, title3, panel1, panel2, panel3, storageK
                 selectedIndex={selectedTabIndex}
                 onSelect={(index) => setSelectedTabIndex(index)}
             >
-                <TabList className='flex gap-5 cursor-pointer px-10 py-2 bg-gray-100 rounded-full items-center justify-center w-fit'>
-                    <CustomTab>
-                        <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 0 ? "text-[#6a2aff]" : ""}`}>
+                <TabList className='flex gap-5 cursor-pointer px-10 py-2 bg-gray-100 rounded-full items-center justify-center w-fit border-none'>
+                    <CustomTab className='border-none'>
+                        <span className={`transition-all border-none hover:text-[#6a2aff] ${selectedTabIndex === 0 ? "text-[#6a2aff]" : ""}`}>
                             {title1}
                         </span>
                     </CustomTab>
                     <span>
                         <Divider orientation="vertical" className='h-4 w-[1px] bg-black' />
                     </span>
-                    <CustomTab>
-                        <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 1 ? "text-[#6a2aff]" : ""}`}>
+                    <CustomTab className='border-none'>
+                        <span className={`transition-all border-none hover:text-[#6a2aff] ${selectedTabIndex === 1 ? "text-[#6a2aff]" : ""}`}>
                             {title2}
                         </span>
                     </CustomTab>
                     <span className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>
                         <Divider orientation="vertical" className={`h-4 w-[1px] bg-black`} />
                     </span>
-                    <CustomTab className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>
-                        <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 2 ? "text-[#6a2aff]" : ""}`}>
+                    <CustomTab className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'} border-none`}>
+                        <span className={`transition-all border-none hover:text-[#6a2aff] ${selectedTabIndex === 2 ? "text-[#6a2aff]" : ""}`}>
                             {title3}
                         </span>
                     </CustomTab>
