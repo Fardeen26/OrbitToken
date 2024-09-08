@@ -9,8 +9,8 @@ const CreateToken = () => {
     const [tokenName, setTokenName] = useState('')
     const [tokenSymbol, setTokenSymbol] = useState('')
     const [tokenImageUrl, setTokenImageUrl] = useState('')
-    const [tokenSupply, setTokenSupply] = useState(0)
-    const [tokenDecimal, setTokenDecimal] = useState(0)
+    const [tokenSupply, setTokenSupply] = useState('')
+    const [tokenDecimal, setTokenDecimal] = useState('')
     const [isCreating, setIsCreating] = useState(false);
     const { connection } = useConnection();
     const wallet = useWallet();
@@ -89,6 +89,11 @@ const CreateToken = () => {
 
             setIsCreating(false)
             toast.success("Token is created Successfully!")
+            setTokenDecimal('');
+            setTokenImageUrl('');
+            setTokenName('');
+            setTokenSupply('');
+            setTokenSymbol('');
         } catch (error) {
             setIsCreating(false)
             toast.error(error.message);
@@ -122,16 +127,18 @@ const CreateToken = () => {
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                 />
                 <input
+                    type="number"
+                    value={tokenDecimal}
                     onChange={(e) => setTokenDecimal(e.target.value)}
                     placeholder='Decimals'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
-                    type="number"
                 />
                 <input
+                    type="number"
+                    value={tokenSupply}
                     onChange={(e) => setTokenSupply(e.target.value)}
                     placeholder="Token initial supply"
                     className="bg-black placeholder:text-sm focus:placeholder:text-white text-white px-3 py-2 rounded-lg w-full"
-                    type="number"
                 />
                 <button type="submit" className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isCreating ? 'Creating...' : 'Create Token'} </button>
             </form>

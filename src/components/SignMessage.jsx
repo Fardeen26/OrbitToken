@@ -23,6 +23,7 @@ function SignMessage() {
             if (!ed25519.verify(signature, encodedMessage, publicKey.toBytes())) throw new Error('Message signature invalid!');
             toast.success(`Message signed successfully! ${bs58.encode(signature)}`);
             setIsSigning(false)
+            setMessage('')
         } catch (error) {
             setIsSigning(false)
             toast.error(error.message)
@@ -34,7 +35,7 @@ function SignMessage() {
         <div className="mt-20 flex justify-center p-5 w-[30vw] items-center rounded-lg">
             <Toaster position='bottom-right' />
             <form action="" className='flex flex-col items-center gap-3' onSubmit={messageSign}>
-                <input type="text" placeholder='message' onChange={(e) => setMessage(e.target.value)} className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg' />
+                <input type="text" placeholder='message' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg' />
                 <button className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isSigning ? 'Signing...' : 'Sign Message '}</button>
             </form>
         </div>

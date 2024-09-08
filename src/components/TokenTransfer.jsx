@@ -17,7 +17,7 @@ const TokenTransfer = () => {
     const [selectedTokenType, setSelectedTokenType] = useState("normal");
     const [selectedToken, setSelectedToken] = useState(null);
     const [recipient, setRecipient] = useState("");
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState('');
     const [isSending, setIsSending] = useState(false);
 
     const { connection } = useConnection();
@@ -122,9 +122,11 @@ const TokenTransfer = () => {
 
             const signature = await sendTransaction(transferTransaction, connection);
             toast.success(`Transaction is Successful! ${signature}`);
+            setAmount('')
+            setRecipient('');
         } catch (error) {
-            console.error(error);
-            toast.error(`Error: ${error.message}`);
+            setIsSending(false);
+            toast.error(error.message);
         } finally {
             setIsSending(false);
         }
@@ -192,9 +194,11 @@ const TokenTransfer = () => {
 
             const signature = await sendTransaction(transaction, connection);
             toast.success(`Transaction is Successful! ${signature}`);
+            setAmount('')
+            setRecipient('');
         } catch (error) {
-            console.error(error);
-            toast.error(`Error: ${error.message}`);
+            setIsSending(false);
+            toast.error(error.message);
         } finally {
             setIsSending(false);
         }
@@ -270,7 +274,7 @@ const TokenTransfer = () => {
                     className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-[25vw] focus:placeholder:text-white"
                 />
                 <input
-                    // value={amount}
+                    value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Amount"
                     className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full focus:placeholder:text-white"
