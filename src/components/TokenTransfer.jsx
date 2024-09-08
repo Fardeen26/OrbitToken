@@ -223,7 +223,7 @@ const TokenTransfer = () => {
                 <select
                     value={selectedTokenType}
                     onChange={(e) => setSelectedTokenType(e.target.value)}
-                    className="bg-black text-white px-3 py-2 rounded-lg w-full"
+                    className="bg-black text-sm px-3 py-3 rounded-lg w-full text-white"
                 >
                     <option value="normal">Normal Token</option>
                     <option value="token22">Token-22</option>
@@ -232,7 +232,7 @@ const TokenTransfer = () => {
                 <select
                     value={selectedToken || ""}
                     onChange={(e) => setSelectedToken(e.target.value)}
-                    className="bg-black text-white px-3 py-2 rounded-lg w-full"
+                    className="bg-black text-sm px-3 py-3 rounded-lg w-full text-white"
                 >
                     <option value="" disabled>
                         Select a token
@@ -267,13 +267,13 @@ const TokenTransfer = () => {
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
                     placeholder="Recipient Address"
-                    className="bg-black text-white px-3 py-2 rounded-lg w-[25vw]"
+                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-[25vw] focus:placeholder:text-white"
                 />
                 <input
-                    value={amount}
+                    // value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Amount"
-                    className="bg-black text-white px-3 py-2 rounded-lg w-full"
+                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full focus:placeholder:text-white"
                     type="number"
                 />
                 <button

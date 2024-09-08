@@ -5,8 +5,6 @@ import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
 import { Toaster, toast } from "sonner";
 
-
-
 const CreateToken = () => {
     const [tokenName, setTokenName] = useState('')
     const [tokenSymbol, setTokenSymbol] = useState('')
@@ -112,34 +110,34 @@ const CreateToken = () => {
                     value={tokenName}
                     onChange={(e) => setTokenName(e.target.value)}
                     placeholder='Token name'
-                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                    className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                 />
                 <input
                     type="text"
                     value={tokenSymbol}
                     onChange={(e) => setTokenSymbol(e.target.value)}
                     placeholder='Token symbol'
-                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                    className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                 />
                 <input
                     type="text"
                     value={tokenImageUrl}
                     onChange={(e) => setTokenImageUrl(e.target.value)}
                     placeholder='Token image url'
-                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                    className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                 />
                 <input
-                    value={tokenDecimal}
+                    // value={tokenDecimal}
                     onChange={(e) => setTokenDecimal(e.target.value)}
                     placeholder='Decimals'
-                    className='bg-black placeholder:text-sm w-[25vw] px-3 py-[9px] rounded-lg border'
+                    className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                     type="number"
                 />
                 <input
-                    value={tokenSupply}
+                    // value={tokenSupply}
                     onChange={(e) => setTokenSupply(e.target.value)}
                     placeholder="Token initial supply"
-                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full"
+                    className="bg-black placeholder:text-sm focus:placeholder:text-white text-white px-3 py-2 rounded-lg w-full"
                     type="number"
                 />
                 <button type="submit" className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isCreating ? 'Creating...' : 'Create Token'} </button>

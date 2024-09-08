@@ -32,9 +32,9 @@ const Account = () => {
         if (!publicKey) return toast.error('Wallet is not connected');
         try {
             setIsAirdropping(true)
-            await connection.requestAirdrop(publicKey, 1 * LAMPORTS_PER_SOL);
+            await connection.requestAirdrop(publicKey, 5 * LAMPORTS_PER_SOL);
             setBalance(await connection.getBalance(publicKey) / 1000000000)
-            toast.success('1 SOL is successfully airdropped');
+            toast.success('5 SOL is successfully airdropped');
             setIsAirdropping(false)
         } catch (error) {
             toast.error(error.message)
@@ -65,7 +65,7 @@ const Account = () => {
         <div className="flex flex-col items-center justify-center p-5 mt-12">
             <Toaster position='bottom-right' />
             {
-                isFetching ? 'Fetching...' : (<h1 className="text-4xl font-bold tracking-tighter">{balance > -1 ? `${balance} SOL` : !publicKey ? <span className="text-2xl font-bold tracking-tighter">Wallet not connected</span> : ''}</h1>)
+                isFetching ? 'Fetching...' : (<h1 className="text-[42px] font-bold tracking-tighter">{balance > -1 ? `${balance} SOL` : !publicKey ? <span className="text-2xl font-bold tracking-tighter">Wallet not connected</span> : ''}</h1>)
             }
             <button className='text-xl mt-5 px-3 py-2 w-72 bg-[#512DA8] text-white rounded hover:bg-black' onClick={getAirdrop}> {isAirdropping ? 'Requesting...' : 'Get Airdrop'}</button>
         </div>
