@@ -1,6 +1,7 @@
 import TokenBalance from "./TokenBalance";
 import TokenTransfer from "./TokenTransfer";
 import TabComponent from "./TabComponent";
+import CreateToken from "./CreateToken";
 
 const Token = () => {
     return (
@@ -10,6 +11,7 @@ const Token = () => {
                 title2={"Transfer Token"}
                 panel1={<TokenBalance />}
                 panel2={<TokenTransfer />}
+                panel3={<CreateToken />}
                 storageKey="token-tabs"
             />
         </div>

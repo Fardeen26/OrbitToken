@@ -10,7 +10,8 @@ const CustomTab = ({ children, ...otherProps }) => (
 
 CustomTab.tabsRole = 'Tab';
 
-const TabComponent = ({ title1, title2, panel1, panel2, storageKey }) => {
+const TabComponent = ({ title1, title2, panel1, panel2, panel3, storageKey }) => {
+    const [selectedStorageKey, setSelectedStorageKey] = useState(storageKey)
     const initialTabIndex = localStorage.getItem(storageKey)
         ? parseInt(localStorage.getItem(storageKey), 10)
         : 0;
@@ -28,7 +29,7 @@ const TabComponent = ({ title1, title2, panel1, panel2, storageKey }) => {
                 selectedIndex={selectedTabIndex}
                 onSelect={(index) => setSelectedTabIndex(index)}
             >
-                <TabList className='flex gap-5 cursor-pointer px-4 py-2 bg-gray-100 rounded-full items-center w-96 justify-center'>
+                <TabList className='flex gap-5 cursor-pointer px-10 py-2 bg-gray-100 rounded-full items-center justify-center w-fit'>
                     <CustomTab>
                         <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 0 ? "text-[#6a2aff]" : ""}`}>
                             {title1}
@@ -42,10 +43,19 @@ const TabComponent = ({ title1, title2, panel1, panel2, storageKey }) => {
                             {title2}
                         </span>
                     </CustomTab>
+                    <span className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>
+                        <Divider orientation="vertical" className={`h-4 w-[1px] bg-black`} />
+                    </span>
+                    <CustomTab className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>
+                        <span className={`transition-all hover:text-[#6a2aff] ${selectedTabIndex === 2 ? "text-[#6a2aff]" : ""}`}>
+                            {title2}
+                        </span>
+                    </CustomTab>
                 </TabList>
 
                 <TabPanel>{panel1}</TabPanel>
                 <TabPanel>{panel2}</TabPanel>
+                <TabPanel className={`${selectedStorageKey == "token-tabs" ? 'visible' : 'hidden'}`}>{panel3}</TabPanel>
             </Tabs>
         </div>
     );
