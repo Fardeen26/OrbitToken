@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <div className='flex items-center justify-between px-5'>
+        <div className='flex items-center justify-between px-5 pb-2'>
             <div className="text-xs pt-4">Made by <a href="https://x.com/fardeen14693425" target="_blank" className='underline'>Fardeen</a> </div>
             <div className="flex pt-4 text-xs gap-2">
                 <a href="https://x.com/fardeen14693425" target="_blank" className='underline'>Twitter</a>

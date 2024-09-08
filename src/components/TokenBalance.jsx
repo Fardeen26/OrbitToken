@@ -90,7 +90,10 @@ const TokenBalance = () => {
                 !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
             }
             {
-                isFetching ? <p className="mt-12">Fetching...</p> : (
+                !token.length && !token22.length && <p className="mt-12 text-center">there are no custom tokens present in your wallet</p>
+            }
+            {
+                token.length && token22.length && isFetching ? <p className="mt-12">Fetching...</p> : (
                     <div className="w-[50vw] mt-12 flex flex-col gap-5">
                         {token.map((token) => (
                             <div key={token.mintAddress} className="w-full rounded-xl flex justify-between p-4 shadow-lg items-center border">
