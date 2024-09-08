@@ -5,7 +5,6 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 const WalletContextProvider = ({ children }) => {
     const endpoint = web3.clusterApiUrl("devnet");
-    //   const wallets = useMemo(() => [], []);
 
     return (
         <ConnectionProvider endpoint={endpoint}>

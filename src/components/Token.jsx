@@ -1,13 +1,19 @@
-import TabComponent from "./TabComponent";
 import TokenBalance from "./TokenBalance";
 import TokenTransfer from "./TokenTransfer";
-// import ShowTokenBalance from "../ShowTokenBalance";
+import TabComponent from "./TabComponent";
 
-const Token = () => (
-    <div className="flex justify-center mt-10">
-        <TabComponent title1={"Token Balance"} title2={"Transfer Token"} panel1={<TokenBalance />} panel2={<TokenTransfer />} />
-        {/* <ShowTokenBalance /> */}
-    </div>
-);
+const Token = () => {
+    return (
+        <div className="mt-10">
+            <TabComponent
+                title1={"Token Balance"}
+                title2={"Transfer Token"}
+                panel1={<TokenBalance />}
+                panel2={<TokenTransfer />}
+                storageKey="token-tabs"
+            />
+        </div>
+    );
+};
 
 export default Token

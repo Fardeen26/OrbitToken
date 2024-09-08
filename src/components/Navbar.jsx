@@ -1,7 +1,5 @@
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import WalletContextProvider from './ConnectionProvider'
 import { Link } from 'react-router-dom'
-
 
 const Navbar = () => {
     return (
@@ -23,16 +21,14 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div className="">
-                        <WalletContextProvider>
-                            <WalletMultiButton style={{
-                                backgroundColor: '#000',
-                                color: 'white',
-                                padding: '2px 18px',
-                                borderRadius: '6px',
-                                fontSize: '14px',
-                                fontWeight: 'bold',
-                            }} />
-                        </WalletContextProvider>
+                        <WalletMultiButton style={{
+                            backgroundColor: '#000',
+                            color: 'white',
+                            padding: '2px 18px',
+                            borderRadius: '6px',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                        }} />
                     </div>
                 </div>
             </nav>

@@ -7,14 +7,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
-// import Navbar from './components/Navbar';
 import App from './App.jsx'
 import Token from './components/Token.jsx';
 import { Transaction } from './components/Transaction.jsx';
 import Account from './components/Account.jsx';
 import Navbar from "./components/Navbar"
 import WalletContextProvider from './components/ConnectionProvider.jsx'
-// import ShowBalance from './ShowBalance.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,17 +21,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/token",
-    element: <><Navbar />
+    element: <>
+      <Navbar />
+      <hr />
       <Token /></>,
   },
   {
     path: "/transaction",
-    element: <><Navbar />
+    element: <>
+      <Navbar />
+      <hr />
       <Transaction /></>,
   },
   {
     path: "/account",
-    element: <><Navbar />
+    element: <>
+      <Navbar />
+      <hr />
       <Account />
     </>,
   },
