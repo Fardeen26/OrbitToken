@@ -122,14 +122,12 @@ const CreateToken = () => {
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                 />
                 <input
-                    // value={tokenDecimal}
                     onChange={(e) => setTokenDecimal(e.target.value)}
                     placeholder='Decimals'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
                     type="number"
                 />
                 <input
-                    // value={tokenSupply}
                     onChange={(e) => setTokenSupply(e.target.value)}
                     placeholder="Token initial supply"
                     className="bg-black placeholder:text-sm focus:placeholder:text-white text-white px-3 py-2 rounded-lg w-full"
