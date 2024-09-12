@@ -84,7 +84,7 @@ const TokenBalance = () => {
     }, [connection, wallet])
 
     return (
-        <div>
+        <div className="h-full">
             <Toaster position='bottom-right' />
             {
                 !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
