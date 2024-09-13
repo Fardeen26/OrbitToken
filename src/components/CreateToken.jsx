@@ -4,6 +4,9 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
 import { Toaster, toast } from "sonner";
+import { UploadClient } from "@uploadcare/upload-client";
+
+const client = new UploadClient({ publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY });
 
 const CreateToken = () => {
     const [tokenName, setTokenName] = useState('')
@@ -15,6 +18,25 @@ const CreateToken = () => {
     const { connection } = useConnection();
     const wallet = useWallet();
 
+    const createAndUploadMetadata = async (name, symbol, description, imageUrl) => {
+        const metadata = JSON.stringify({
+            name,
+            symbol,
+            description,
+            image: imageUrl,
+        });
+
+        const metadataFile = new File([metadata], "metadata.json", { type: "application/json" });
+
+        try {
+            const result = await client.uploadFile(metadataFile);
+            return result.cdnUrl;
+        } catch (error) {
+            console.error("Upload failed:", error);
+            throw error;
+        }
+    };
+
     async function buildToken(e) {
         e.preventDefault();
         if (!wallet.publicKey) return toast.error("Please connect to a wallet first")
@@ -23,11 +45,18 @@ const CreateToken = () => {
         try {
             setIsCreating(true);
             const mintKeypair = Keypair.generate();
+
+            let metadataUri = await createAndUploadMetadata(tokenName, tokenSymbol, "Created using OrbitToken", tokenImageUrl);
+            if (!metadataUri) {
+                toast.info("Failed to generate metadata URI, using custom URI")
+                metadataUri = import.meta.env.VITE_DEFAULT_URI
+            };
+
             const metadata = {
                 mint: mintKeypair.publicKey,
                 name: tokenName,
                 symbol: tokenSymbol,
-                uri: 'https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json',
+                uri: metadataUri,
                 additionalMetadata: [],
             };
 
