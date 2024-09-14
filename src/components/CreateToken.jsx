@@ -131,45 +131,105 @@ const CreateToken = () => {
     }
 
     return (
-        <div className="mt-20 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
+        <div className="mt-8 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
             <Toaster position="bottom-right" />
-            <form onSubmit={buildToken} className='flex flex-col items-center gap-3'>
-                <input
+            <form onSubmit={buildToken} className='flex flex-col items-center gap-3 w-full'>
+                {/* <input
                     type="text"
                     value={tokenName}
                     onChange={(e) => setTokenName(e.target.value)}
                     placeholder='Token name'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
-                />
-                <input
+                /> */}
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
+                    <input
+                        type='text'
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='Dogecoin'
+                        value={tokenName}
+                        onChange={(e) => setTokenName(e.target.value)}
+                    />
+                </div>
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Symbol</label>
+                    <input
+                        type='text'
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='DOGE'
+                        value={tokenSymbol}
+                        onChange={(e) => setTokenSymbol(e.target.value)}
+                    />
+                </div>
+
+
+                {/* <input
                     type="text"
                     value={tokenSymbol}
                     onChange={(e) => setTokenSymbol(e.target.value)}
                     placeholder='Token symbol'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
-                />
-                <input
+                /> */}
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Image</label>
+                    <input
+                        type='text'
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='https://image-url.unsplash.com'
+                        value={tokenImageUrl}
+                        onChange={(e) => setTokenImageUrl(e.target.value)}
+                    />
+                </div>
+
+                {/* <input
                     type="text"
                     value={tokenImageUrl}
                     onChange={(e) => setTokenImageUrl(e.target.value)}
                     placeholder='Token image url'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
-                />
-                <input
+                /> */}
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Decimal</label>
+                    <input
+                        type="number"
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='9'
+                        value={tokenDecimal}
+                        onChange={(e) => setTokenDecimal(e.target.value)}
+                    />
+                </div>
+
+                {/* <input
                     type="number"
                     value={tokenDecimal}
                     onChange={(e) => setTokenDecimal(e.target.value)}
                     placeholder='Decimals'
                     className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg border'
-                />
-                <input
+                /> */}
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Supply</label>
+                    <input
+                        type="number"
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='1000'
+                        value={tokenSupply}
+                        onChange={(e) => setTokenSupply(e.target.value)}
+                    />
+                </div>
+
+                {/* <input
                     type="number"
                     value={tokenSupply}
                     onChange={(e) => setTokenSupply(e.target.value)}
                     placeholder="Token initial supply"
                     className="bg-black placeholder:text-sm focus:placeholder:text-white text-white px-3 py-2 rounded-lg w-full"
-                />
-                <button type="submit" className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isCreating ? 'Creating...' : 'Create Token'} </button>
+                /> */}
+                {/* <button type="submit" className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isCreating ? 'Creating...' : 'Create Token'} </button> */}
+                <button type="submit" className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isCreating ? 'Creating...' : 'Create Token'} </button>
             </form>
         </div>
     )
