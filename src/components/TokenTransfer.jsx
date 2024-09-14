@@ -221,71 +221,106 @@ const TokenTransfer = () => {
     };
 
     return (
-        <div className="mt-20 flex justify-center p-5 w-[50vw] items-center rounded-lg bg-white">
+        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
             <Toaster position="bottom-right" />
-            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
-                <select
-                    value={selectedTokenType}
-                    onChange={(e) => setSelectedTokenType(e.target.value)}
-                    className="bg-black text-sm px-3 py-3 rounded-lg w-full text-white"
-                >
-                    <option value="normal">Normal Token</option>
-                    <option value="token22">Token-22</option>
-                </select>
+            <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 w-full">
 
-                <select
-                    value={selectedToken || ""}
-                    onChange={(e) => setSelectedToken(e.target.value)}
-                    className="bg-black text-sm px-3 py-3 rounded-lg w-full text-white"
-                >
-                    <option value="" disabled>
-                        Select a token
-                    </option>
-                    {selectedTokenType === "normal" &&
-                        (normalTokens.length ? (
-                            normalTokens.map((token, index) => (
-                                <option value={token.mint} key={index}>
-                                    {token.name} ({token.balance})
-                                </option>
-                            ))
-                        ) : (
-                            <option value="" disabled>
-                                No tokens found
-                            </option>
-                        ))}
-                    {selectedTokenType === "token22" &&
-                        (token22s.length ? (
-                            token22s.map((token, index) => (
-                                <option value={token.mint} key={index}>
-                                    {token.name} ({token.balance})
-                                </option>
-                            ))
-                        ) : (
-                            <option value="" disabled>
-                                No Token-22 tokens found
-                            </option>
-                        ))}
-                </select>
+                <div className="w-full">
+                    <div className="text-xs mb-3 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Select token type</div>
+                    <select
+                        value={selectedTokenType}
+                        onChange={(e) => setSelectedTokenType(e.target.value)}
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <option value="normal">Normal Token</option>
+                        <option value="token22">Token-22</option>
+                    </select>
+                </div>
 
-                <input
+                <div className="w-full mt-1">
+                    <div className="text-xs mb-3 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Choose a token</div>
+                    <select
+                        value={selectedToken || ""}
+                        onChange={(e) => setSelectedToken(e.target.value)}
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <option value="" disabled>
+                            Select a token
+                        </option>
+                        {selectedTokenType === "normal" &&
+                            (normalTokens.length ? (
+                                normalTokens.map((token, index) => (
+                                    <option value={token.mint} key={index}>
+                                        {token.name} ({token.balance})
+                                    </option>
+                                ))
+                            ) : (
+                                <option value="" disabled>
+                                    No tokens found
+                                </option>
+                            ))}
+                        {selectedTokenType === "token22" &&
+                            (token22s.length ? (
+                                token22s.map((token, index) => (
+                                    <option value={token.mint} key={index}>
+                                        {token.name} ({token.balance})
+                                    </option>
+                                ))
+                            ) : (
+                                <option value="" disabled>
+                                    No Token-22 tokens found
+                                </option>
+                            ))}
+                    </select>
+
+                </div>
+
+                {/* <input
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
                     placeholder="Recipient Address"
                     className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-[25vw] focus:placeholder:text-white"
-                />
-                <input
+                /> */}
+
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Recipient Address</label>
+                    <input
+                        type="text"
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1'
+                        value={recipient}
+                        onChange={(e) => setRecipient(e.target.value)}
+                    />
+                </div>
+
+                {/* <input
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Amount"
                     className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full focus:placeholder:text-white"
                     type="number"
-                />
-                <button
+                /> */}
+
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Amount</label>
+                    <input
+                        type="number"
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='0.01'
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                    />
+                </div>
+
+                {/* <button
                     disabled={isSending}
                     className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500"
                 >
                     {isSending ? "Sending..." : "Send"}
-                </button>
+                </button> */}
+
+                <button type="submit" disabled={isSending} className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSending ? "Sending..." : "Send"}</button>
             </form>
         </div>
     );

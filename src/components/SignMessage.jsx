@@ -32,11 +32,21 @@ function SignMessage() {
     };
 
     return (
-        <div className="mt-20 flex justify-center p-5 w-[30vw] items-center rounded-lg">
+        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg">
             <Toaster position='bottom-right' />
-            <form action="" className='flex flex-col items-center gap-3' onSubmit={messageSign}>
-                <input type="text" placeholder='message' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-black placeholder:text-sm focus:placeholder:text-white text-white w-[25vw] px-3 py-[9px] rounded-lg' />
-                <button className='text-lg mt-5 px-3 py-[6px] w-[25vw] bg-[#512DA8] text-white rounded hover:bg-black'>{isSigning ? 'Signing...' : 'Sign Message '}</button>
+            <form className='flex flex-col items-center gap-3 w-full' onSubmit={messageSign}>
+                <div className="space-y-2 w-full">
+                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Message</label>
+                    <input
+                        type="text"
+                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder='Greetings!'
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    />
+                </div>
+
+                <button type="submit" className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSigning ? 'Signing...' : 'Sign Message '}</button>
             </form>
         </div>
     );
