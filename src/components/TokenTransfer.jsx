@@ -275,14 +275,6 @@ const TokenTransfer = () => {
 
                 </div>
 
-                {/* <input
-                    value={recipient}
-                    onChange={(e) => setRecipient(e.target.value)}
-                    placeholder="Recipient Address"
-                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-[25vw] focus:placeholder:text-white"
-                /> */}
-
-
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Recipient Address</label>
                     <input
@@ -293,14 +285,6 @@ const TokenTransfer = () => {
                         onChange={(e) => setRecipient(e.target.value)}
                     />
                 </div>
-
-                {/* <input
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Amount"
-                    className="bg-black placeholder:text-sm text-white px-3 py-2 rounded-lg w-full focus:placeholder:text-white"
-                    type="number"
-                /> */}
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Amount</label>
@@ -313,14 +297,7 @@ const TokenTransfer = () => {
                     />
                 </div>
 
-                {/* <button
-                    disabled={isSending}
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500"
-                >
-                    {isSending ? "Sending..." : "Send"}
-                </button> */}
-
-                <button type="submit" disabled={isSending} className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSending ? "Sending..." : "Send"}</button>
+                <button type="submit" disabled={isSending} className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSending ? "Sending..." : "Send Transaction"}</button>
             </form>
         </div>
     );
