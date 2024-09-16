@@ -11,6 +11,7 @@ import { Toaster, toast } from "sonner";
 import { createAssociatedTokenAccountInstruction } from "@solana/spl-token";
 import { getTokenMetadata } from "@solana/spl-token";
 import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 const TokenTransfer = () => {
     const [normalTokens, setNormalTokens] = useState([]);
@@ -273,29 +274,16 @@ const TokenTransfer = () => {
                                 </option>
                             ))}
                     </select>
-
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Recipient Address</label>
-                    <input
-                        type="text"
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1'
-                        value={recipient}
-                        onChange={(e) => setRecipient(e.target.value)}
-                    />
+                    <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Amount</label>
-                    <input
-                        type="number"
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='0.01'
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                    />
+                    <Input placeholder={"0.01"} value={amount} setter={setAmount} />
                 </div>
 
                 <Button btnText={"Send Transaction"} btnState={isSending} onStateText={"Sending..."} />

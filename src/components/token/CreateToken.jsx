@@ -6,6 +6,7 @@ import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
 import { Toaster, toast } from "sonner";
 import { UploadClient } from "@uploadcare/upload-client";
 import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 const client = new UploadClient({ publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY });
 
@@ -137,57 +138,27 @@ const CreateToken = () => {
             <form onSubmit={buildToken} className='flex flex-col items-center gap-3 w-full'>
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
-                    <input
-                        type='text'
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='Dogecoin'
-                        value={tokenName}
-                        onChange={(e) => setTokenName(e.target.value)}
-                    />
+                    <Input placeholder={"Dogecoin"} value={tokenName} setter={setTokenName} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Symbol</label>
-                    <input
-                        type='text'
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='DOGE'
-                        value={tokenSymbol}
-                        onChange={(e) => setTokenSymbol(e.target.value)}
-                    />
+                    <Input placeholder={"DOGE!"} value={tokenSymbol} setter={setTokenSymbol} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Image</label>
-                    <input
-                        type='text'
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='https://image-url.unsplash.com'
-                        value={tokenImageUrl}
-                        onChange={(e) => setTokenImageUrl(e.target.value)}
-                    />
+                    <Input placeholder={"https://cat-image.com"} value={tokenImageUrl} setter={setTokenImageUrl} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Decimal</label>
-                    <input
-                        type="number"
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='9'
-                        value={tokenDecimal}
-                        onChange={(e) => setTokenDecimal(e.target.value)}
-                    />
+                    <Input placeholder={"9"} value={tokenDecimal} setter={setTokenDecimal} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Supply</label>
-                    <input
-                        type="number"
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='1000'
-                        value={tokenSupply}
-                        onChange={(e) => setTokenSupply(e.target.value)}
-                    />
+                    <Input placeholder={"1000"} value={tokenSupply} setter={setTokenSupply} />
                 </div>
 
                 <Button btnText={"Create Token"} btnState={isCreating} onStateText={"Creating..."} />

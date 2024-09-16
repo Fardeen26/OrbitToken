@@ -4,6 +4,7 @@ import bs58 from 'bs58';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
 import Button from '../ui/Button';
+import Input from '../ui/Input';
 
 function SignMessage() {
     const [isSigning, setIsSigning] = useState(false)
@@ -38,13 +39,7 @@ function SignMessage() {
             <form className='flex flex-col items-center gap-3 w-full' onSubmit={messageSign}>
                 <div className="space-y-2 w-full">
                     <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Message</label>
-                    <input
-                        type="text"
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder='Greetings!'
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    />
+                    <Input placeholder={"Greetings!"} value={message} setter={setMessage} />
                 </div>
 
                 <Button btnText={"Sign Message"} btnState={isSigning} onStateText={"Signing..."} />
