@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
+import Button from '../ui/Button';
 
 function SignMessage() {
     const [isSigning, setIsSigning] = useState(false)
@@ -46,7 +47,7 @@ function SignMessage() {
                     />
                 </div>
 
-                <button type="submit" className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSigning ? 'Signing...' : 'Sign Message '}</button>
+                <Button btnText={"Sign Message"} btnState={isSigning} onStateText={"Signing..."} />
             </form>
         </div>
     );

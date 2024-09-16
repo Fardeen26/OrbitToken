@@ -1,6 +1,6 @@
 import TokenBalance from "./TokenBalance";
 import TokenTransfer from "./TokenTransfer";
-import TabComponent from "./TabComponent";
+import TabComponent from "../ui/TabComponent";
 import CreateToken from "./CreateToken";
 
 const Token = () => {

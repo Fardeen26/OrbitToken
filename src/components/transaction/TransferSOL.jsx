@@ -2,6 +2,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
+import Button from '../ui/Button';
 
 function TransferSOL() {
     const [recipient, setRecipient] = useState('');
@@ -63,7 +64,7 @@ function TransferSOL() {
                     />
                 </div>
 
-                <button type="submit" className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>  {isSending ? 'Sending...' : 'Send Transaction'} </button>
+                <Button btnText={"Send Transaction"} btnState={isSending} onStateText={"Sending..."} />
             </form>
         </div>
     );

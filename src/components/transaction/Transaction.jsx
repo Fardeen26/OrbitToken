@@ -1,8 +1,8 @@
 import SignMessage from "./SignMessage";
-import TabComponent from "./TabComponent";
+import TabComponent from "../ui/TabComponent";
 import TransferSOL from "./TransferSOL";
 
-export const Transaction = () => {
+const Transaction = () => {
     return (
         <div className="mt-10">
             <TabComponent
@@ -15,3 +15,5 @@ export const Transaction = () => {
         </div>
     );
 };
+
+export default Transaction;

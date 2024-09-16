@@ -10,6 +10,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Toaster, toast } from "sonner";
 import { createAssociatedTokenAccountInstruction } from "@solana/spl-token";
 import { getTokenMetadata } from "@solana/spl-token";
+import Button from "../ui/Button";
 
 const TokenTransfer = () => {
     const [normalTokens, setNormalTokens] = useState([]);
@@ -297,7 +298,7 @@ const TokenTransfer = () => {
                     />
                 </div>
 
-                <button type="submit" disabled={isSending} className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isSending ? "Sending..." : "Send Transaction"}</button>
+                <Button btnText={"Send Transaction"} btnState={isSending} onStateText={"Sending..."} />
             </form>
         </div>
     );

@@ -5,6 +5,7 @@ import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
 import { Toaster, toast } from "sonner";
 import { UploadClient } from "@uploadcare/upload-client";
+import Button from "../ui/Button";
 
 const client = new UploadClient({ publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY });
 
@@ -189,7 +190,7 @@ const CreateToken = () => {
                     />
                 </div>
 
-                <button type="submit" className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-full bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all'>{isCreating ? 'Creating...' : 'Create Token'} </button>
+                <Button btnText={"Create Token"} btnState={isCreating} onStateText={"Creating..."} />
             </form>
         </div>
     )
