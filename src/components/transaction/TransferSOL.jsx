@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
 import Button from '../ui/Button';
 import Input from '../ui/Input';
+import Label from '../ui/Label';
 
 function TransferSOL() {
     const [recipient, setRecipient] = useState('');
@@ -43,12 +44,12 @@ function TransferSOL() {
             <Toaster position='bottom-right' />
             <form className='flex flex-col items-center gap-3 w-full' onSubmit={sendSol}>
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Recipient Address</label>
+                    <Label labelText={"Recipient Address"} />
                     <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} />
                 </div>
 
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Amount</label>
+                    <Label labelText={"Amount"} />
                     <Input placeholder={"0.001"} value={amount} setter={setAmount} />
                 </div>
 

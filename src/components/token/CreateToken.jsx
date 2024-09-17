@@ -7,6 +7,7 @@ import { Toaster, toast } from "sonner";
 import { UploadClient } from "@uploadcare/upload-client";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import Label from "../ui/Label";
 
 const client = new UploadClient({ publicKey: import.meta.env.VITE_UPLOADCARE_PUBLIC_KEY });
 
@@ -137,27 +138,27 @@ const CreateToken = () => {
             <Toaster position="bottom-right" />
             <form onSubmit={buildToken} className='flex flex-col items-center gap-3 w-full'>
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
+                    <Label labelText={"Name"} />
                     <Input placeholder={"Dogecoin"} value={tokenName} setter={setTokenName} />
                 </div>
 
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Symbol</label>
+                    <Label labelText={"Symbol"} />
                     <Input placeholder={"DOGE!"} value={tokenSymbol} setter={setTokenSymbol} />
                 </div>
 
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Image</label>
+                    <Label labelText={"Image"} />
                     <Input placeholder={"https://cat-image.com"} value={tokenImageUrl} setter={setTokenImageUrl} />
                 </div>
 
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Decimal</label>
+                    <Label labelText={"Decimal"} />
                     <Input placeholder={"9"} value={tokenDecimal} setter={setTokenDecimal} />
                 </div>
 
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Supply</label>
+                    <Label labelText={"Supply"} />
                     <Input placeholder={"1000"} value={tokenSupply} setter={setTokenSupply} />
                 </div>
 

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Toaster, toast } from 'sonner'
 import Button from '../ui/Button';
 import Input from '../ui/Input';
+import Label from '../ui/Label';
 
 function SignMessage() {
     const [isSigning, setIsSigning] = useState(false)
@@ -38,7 +39,7 @@ function SignMessage() {
             <Toaster position='bottom-right' />
             <form className='flex flex-col items-center gap-3 w-full' onSubmit={messageSign}>
                 <div className="space-y-2 w-full">
-                    <label htmlFor="" className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Message</label>
+                    <Label labelText={"Message"} />
                     <Input placeholder={"Greetings!"} value={message} setter={setMessage} />
                 </div>
 
