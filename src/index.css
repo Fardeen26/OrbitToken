@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hiring {
+    color: red !important;
+    background-color: red !important;
+}

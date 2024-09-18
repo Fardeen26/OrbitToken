@@ -146,7 +146,8 @@ const TokenTransfer = () => {
             );
 
             if (sourceTokenAccounts.value.length === 0) {
-                throw new Error('No Token-22 account found for the wallet');
+                toast.error('No Token-22 account found for the wallet')
+                return;
             }
             const sourceTokenAccount = sourceTokenAccounts.value[0].pubkey;
 
@@ -224,7 +225,7 @@ const TokenTransfer = () => {
     };
 
     return (
-        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-white">
+        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-black text-white ">
             <Toaster position="bottom-right" />
             <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 w-full">
 

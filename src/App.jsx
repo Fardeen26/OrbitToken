@@ -5,12 +5,12 @@ import WalletContextProvider from './provider/ConnectionProvider'
 
 function App() {
   return (
-    <div>
+    <div className="h-screen transition-all bg-white dark:bg-black">
       <WalletContextProvider>
         <Navbar />
-        <hr />
+        <hr className="transition-all dark:border-gray-800 my-4" />
         <Hero />
-        <hr />
+        <hr className="transition-all dark:border-gray-800 my-4" />
         <Footer />
       </WalletContextProvider>
     </div>

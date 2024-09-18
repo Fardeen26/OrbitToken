@@ -61,13 +61,13 @@ const Account = () => {
     }, [publicKey, connection]);
 
     return (
-        <div className="flex flex-col items-center justify-center p-5 mt-12">
+        <div className="flex flex-col items-center justify-center p-5 mt-12 bg-black text-white">
             <Toaster position='bottom-right' />
             {
                 isFetching ? 'Fetching...' : (<h1 className="text-[42px] font-bold tracking-tighter">{balance > -1 ? `${balance} SOL` : !publicKey ? <span className="text-2xl font-bold tracking-tighter">Wallet not connected</span> : ''}</h1>)
             }
 
-            <button className='font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-80 bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all' onClick={getAirdrop}>{isAirdropping ? 'Requesting...' : 'Get Airdrop'}</button>
+            <button className='bg-white text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base mt-5 px-3 py-[10px] w-80 bg-black text-white border border-black rounded-lg hover:bg-transparent hover:text-black transition-all' onClick={getAirdrop}>{isAirdropping ? 'Requesting...' : 'Get Airdrop'}</button>
         </div>
     );
 };
