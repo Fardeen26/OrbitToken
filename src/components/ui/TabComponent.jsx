@@ -2,6 +2,7 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { Divider } from "@nextui-org/divider";
 import { useState, useEffect } from "react";
 
+// eslint-disable-next-line react/prop-types
 const CustomTab = ({ children, ...otherProps }) => (
     <Tab {...otherProps}>
         <h1>{children}</h1>
@@ -10,7 +11,9 @@ const CustomTab = ({ children, ...otherProps }) => (
 
 CustomTab.tabsRole = 'Tab';
 
+// eslint-disable-next-line react/prop-types
 const TabComponent = ({ title1, title2, title3, panel1, panel2, panel3, storageKey }) => {
+    // eslint-disable-next-line no-unused-vars
     const [selectedStorageKey, setSelectedStorageKey] = useState(storageKey)
     const initialTabIndex = localStorage.getItem(storageKey)
         ? parseInt(localStorage.getItem(storageKey), 10)
