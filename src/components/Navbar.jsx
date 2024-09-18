@@ -16,13 +16,13 @@ const Navbar = () => {
                     </div>
                     <div className="flex gap-20 align-bottom text-end">
                         <div className="align-bottom">
-                            <Link to={'/token'} className="text-xl font-semibold tracking-tight hover:text-purple-300">Tokens</Link>
+                            <Link to={'/token'} className="text-xl font-semibold tracking-tight hover:text-[#6a2aff]">Tokens</Link>
                         </div>
                         <div className="">
-                            <Link to={'/transaction'} className="text-xl font-semibold tracking-tight hover:text-purple-300">Transaction</Link>
+                            <Link to={'/transaction'} className="text-xl font-semibold tracking-tight hover:text-[#6a2aff]">Transaction</Link>
                         </div>
                         <div className="">
-                            <Link to={'/account'} className="text-xl font-semibold tracking-tight hover:text-purple-300">Account</Link>
+                            <Link to={'/account'} className="text-xl font-semibold tracking-tight hover:text-[#6a2aff]">Account</Link>
                         </div>
                     </div>
 

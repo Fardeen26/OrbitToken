@@ -4,7 +4,7 @@ import TransferSOL from "./TransferSOL";
 
 const Transaction = () => {
     return (
-        <div className="mt-10">
+        <div className="mt-10 dark:bg-black ">
             <TabComponent
                 title1={"Transfer SOL"}
                 title2={"Sign Message"}

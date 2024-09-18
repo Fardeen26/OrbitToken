@@ -84,7 +84,7 @@ const TokenBalance = () => {
     }, [connection, wallet])
 
     return (
-        <div className="h-full">
+        <div className="h-full dark:bg-black">
             <Toaster position='bottom-right' />
             {
                 !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
@@ -98,7 +98,7 @@ const TokenBalance = () => {
                         {token.map((token) => (
                             <div key={token.mintAddress} className="w-full rounded-xl flex justify-between p-4 shadow-lg items-center border">
                                 <div className="flex gap-4 items-center">
-                                    <div className="rounded-full px-4 h-14 w-14 bg-gray-200 flex justify-center items-center font-semibold text-sm">{token.mintAddress.substring(0, 5)}</div>
+                                    <div className="rounded-full dark:text-black px-4 h-14 w-14 bg-gray-200 flex justify-center items-center font-semibold text-sm">{token.mintAddress.substring(0, 5)}</div>
                                     <div className="w-full flex-grow">
                                         <p className="text-lg">{token.name}</p>
                                         <p className="w-4/6 md:hidden text-sm font-thin overflow-clip text-ellipsis">{token.mintAddress.substring(0, 40)}</p>

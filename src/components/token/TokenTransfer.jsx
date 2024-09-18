@@ -225,7 +225,7 @@ const TokenTransfer = () => {
     };
 
     return (
-        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg bg-black text-white ">
+        <div className="mt-10 flex justify-center p-5 w-[30vw] items-center rounded-lg dark:bg-black dark:text-white ">
             <Toaster position="bottom-right" />
             <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 w-full">
 
@@ -234,10 +234,10 @@ const TokenTransfer = () => {
                     <select
                         value={selectedTokenType}
                         onChange={(e) => setSelectedTokenType(e.target.value)}
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-9 w-full rounded-md border border-black dark:border-white bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        <option value="normal">Normal Token</option>
-                        <option value="token22">Token-22</option>
+                        <option value="normal" className="text-black">Normal Token</option>
+                        <option value="token22" className="text-black">Token-22</option>
                     </select>
                 </div>
 
@@ -246,7 +246,7 @@ const TokenTransfer = () => {
                     <select
                         value={selectedToken || ""}
                         onChange={(e) => setSelectedToken(e.target.value)}
-                        className="flex h-9 w-full rounded-md border border-black bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-9 w-full rounded-md border border-black dark:border-white bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         <option value="" disabled>
                             Select a token
@@ -254,24 +254,24 @@ const TokenTransfer = () => {
                         {selectedTokenType === "normal" &&
                             (normalTokens.length ? (
                                 normalTokens.map((token, index) => (
-                                    <option value={token.mint} key={index}>
+                                    <option value={token.mint} key={index} className="text-black">
                                         {token.name} ({token.balance})
                                     </option>
                                 ))
                             ) : (
-                                <option value="" disabled>
+                                <option value="" disabled className="text-black">
                                     No tokens found
                                 </option>
                             ))}
                         {selectedTokenType === "token22" &&
                             (token22s.length ? (
                                 token22s.map((token, index) => (
-                                    <option value={token.mint} key={index}>
+                                    <option value={token.mint} key={index} className="text-black">
                                         {token.name} ({token.balance})
                                     </option>
                                 ))
                             ) : (
-                                <option value="" disabled>
+                                <option value="" disabled className="text-black">
                                     No Token-22 tokens found
                                 </option>
                             ))}

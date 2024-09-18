@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/transaction",
-    element: <div className='bg-black text-white h-screen transition-all'>
+    element: <div className='dark:bg-black dark:text-white h-screen transition-all'>
       <Navbar />
       <hr className='hidden' />
       <Transaction />
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/account",
-    element: <div className='bg-black text-white h-screen transition-all'>
+    element: <div className='dark:bg-black dark:text-white h-screen transition-all'>
       <Navbar />
       <hr className='hidden' />
       <Account />
