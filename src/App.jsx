@@ -8,9 +8,9 @@ function App() {
     <div className="h-screen transition-all bg-white dark:bg-black">
       <WalletContextProvider>
         <Navbar />
-        <hr className="transition-all dark:border-gray-800 my-4" />
+        <hr className="transition-all dark:border-gray-900 my-4" />
         <Hero />
-        <hr className="transition-all dark:border-gray-800 my-4" />
+        <hr className="transition-all dark:border-gray-900 my-4" />
         <Footer />
       </WalletContextProvider>
     </div>

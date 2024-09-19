@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     path: "/token",
     element: <div className='bg-white transition-all dark:bg-black dark:text-white h-screen'>
       <Navbar />
-      <hr className='hidden' />
+      <hr className='transition-all dark:border-gray-900 my-4' />
       <Token />
     </div>,
   },
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     path: "/transaction",
     element: <div className='dark:bg-black dark:text-white h-screen transition-all'>
       <Navbar />
-      <hr className='hidden' />
+      <hr className='transition-all dark:border-gray-900 my-4' />
       <Transaction />
     </div>,
   },
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     path: "/account",
     element: <div className='dark:bg-black dark:text-white h-screen transition-all'>
       <Navbar />
-      <hr className='hidden' />
+      <hr className='transition-all dark:border-gray-900 my-4' />
       <Account />
     </div>,
   },
