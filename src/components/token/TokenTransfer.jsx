@@ -135,6 +135,383 @@ const TokenTransfer = () => {
         }
     };
 
+
+
+    // eslint-disable-next-line no-unused-vars
+    // const sendNormalToken22 = async () => {
+    //     if (!publicKey) return toast.error('Wallet is not connected');
+    //     if (!recipient || !amount || amount < 0) return toast.error('Provide the correct credentials');
+
+    //     setIsSending(true);
+    //     try {
+    //         const sourceTokenAccounts = await connection.getTokenAccountsByOwner(
+    //             publicKey, { programId: TOKEN_2022_PROGRAM_ID }
+    //         );
+
+    //         if (sourceTokenAccounts.value.length === 0) {
+    //             toast.error('No Token-22 account found for the wallet')
+    //             return;
+    //         }
+    //         const sourceTokenAccount = sourceTokenAccounts.value[0].pubkey;
+
+    //         const destinationWallet = new PublicKey(recipient);
+    //         const mint = new PublicKey(selectedToken);
+
+
+    //         let destinationTokenAccountPubkey;
+    //         // eslint-disable-next-line no-constant-condition
+    //         if (true) {
+    //             try {
+    //                 const associatedToken = getAssociatedTokenAddressSync(
+    //                     mint,
+    //                     destinationWallet,
+    //                     false,
+    //                     TOKEN_2022_PROGRAM_ID
+    //                 );
+
+    //                 const account = await getAccount(
+    //                     connection,
+    //                     associatedToken,
+    //                     "confirmed",
+    //                     TOKEN_2022_PROGRAM_ID
+    //                 );
+
+    //                 const transaction = new Transaction().add(
+    //                     createAssociatedTokenAccountInstruction(
+    //                         publicKey,
+    //                         associatedToken,
+    //                         destinationWallet,
+    //                         mint,
+    //                         TOKEN_2022_PROGRAM_ID
+    //                     )
+    //                 );
+
+    //                 console.log("recipient accaddress!!!!!", transaction)
+    //                 destinationTokenAccountPubkey = account;
+
+
+    //             } catch (err) {
+    //                 console.log(err)
+    //             }
+
+
+
+
+    //             const transferInstruction = createTransferInstruction(
+    //                 sourceTokenAccount,
+    //                 destinationTokenAccountPubkey,
+    //                 publicKey,
+    //                 amount * Math.pow(10, 9),
+    //                 [],
+    //                 TOKEN_2022_PROGRAM_ID
+    //             );
+
+    //             const transaction = new Transaction().add(transferInstruction);
+    //             const latestBlockHash = await connection.getLatestBlockhash('confirmed');
+    //             transaction.recentBlockhash = latestBlockHash.blockhash;
+    //             transaction.feePayer = publicKey;
+
+    //             const signature = await sendTransaction(transaction, connection);
+    //             toast.success(`Transaction is Successful! ${signature}`);
+    //             setAmount('')
+    //             setRecipient('');
+    //         }
+    //     } catch (err) {
+    //         console.log('ha bhaia err hai', err);
+    //     }
+    // }
+
+    // async function getOrCreateATA(network, mintAddress, recipientAddress, tokenProgram) {
+
+
+    //     // cccccccccccccccccccccccccccccccccccccccc
+    //     const rpcEndpoint = `https://api.${network}.solana.com`;
+    //     console.log(rpcEndpoint, "rpc");
+
+    //     const associatedToken = getAssociatedTokenAddressSync(
+    //         new PublicKey(mintAddress),
+    //         new PublicKey(recipientAddress),
+    //         false,
+    //         TOKEN_2022_PROGRAM_ID
+    //     );
+
+    //     console.log(associatedToken, "associatedToken");
+    //     let account;
+
+    //     try {
+    //         // Attempt to get the existing associated token account
+    //         account = await getAccount(
+    //             connection,
+    //             associatedToken,
+    //             "confirmed",
+    //             tokenProgram === "spl-token" ? TOKEN_PROGRAM_ID : TOKEN_2022_PROGRAM_ID
+    //         );
+    //         console.log(account, "account get");
+    //     } catch (error) {
+    //         if (
+    //             error instanceof TokenAccountNotFoundError ||
+    //             error instanceof TokenInvalidAccountOwnerError
+    //         ) {
+    //             // If the account doesn't exist, create it
+    //             try {
+    //                 const programId = tokenProgram === "spl-token" ? TOKEN_PROGRAM_ID : TOKEN_2022_PROGRAM_ID;
+
+    //                 const transaction = new Transaction().add(
+    //                     createAssociatedTokenAccountInstruction(
+    //                         publicKey, // Payer
+    //                         associatedToken, // Associated token account
+    //                         recipientAddress, // Owner of the token account
+    //                         mintAddress, // Token mint
+    //                         programId // Token program ID
+    //                     )
+    //                 );
+    //                 console.log(transaction, "transaction create successful");
+
+    //                 // Send the transaction to create the associated token account
+    //                 await sendTransaction(transaction, connection);
+    //                 console.log("Associated token account created and transaction sent");
+    //             } catch (error) {
+    //                 console.error("Failed to create associated token account", error);
+    //             }
+    //         }
+    //     }
+
+    //     // ccccccccccccccccccccccccccccccccccccccccccccc
+    //     // Return both the account (if exists) and the associated token address
+    //     return { account, associatedToken, connection };
+    // }
+
+    // const handleSend = async () => {
+    //     console.log("Amount", amount);
+    //     console.log("Recipient", recipient, typeof recipient);
+
+    //     if (!publicKey) {
+    //         return;
+    //     }
+
+    //     const recipientAddress = new PublicKey(recipient);
+    //     console.log('step-1');
+    //     const loadingToastId = toast.loading("Processing transaction...");
+
+    //     const mint = new PublicKey(selectedToken);
+    //     const sendersATA = getAssociatedTokenAddressSync(
+    //         mint,
+    //         publicKey,
+    //         false,
+    //         TOKEN_2022_PROGRAM_ID
+    //     );
+    //     console.log(sendersATA, typeof sendersATA);
+    //     console.log('step-2');
+
+    //     try {
+    //         console.log('entered try-1');
+
+    //         // Ensure recipient has an associated token account
+    //         // const { associatedToken: receiversATA, connection } = await getOrCreateATA(
+    //         //     'devnet',
+    //         //     mint,
+    //         //     recipientAddress,
+    //         //     'token-22'
+    //         // );
+
+    //         const associatedToken = getAssociatedTokenAddressSync(
+    //             mint,
+    //             recipientAddress,
+    //             false,
+    //             TOKEN_2022_PROGRAM_ID
+    //         );
+
+    //         console.log(associatedToken, "associatedToken");
+    //         let account;
+
+    //         try {
+    //             // Attempt to get the existing associated token account
+    //             account = await getAccount(
+    //                 connection,
+    //                 associatedToken,
+    //                 "confirmed",
+    //                 TOKEN_2022_PROGRAM_ID
+    //             );
+    //             console.log(account, "account get");
+
+    //         } catch (error) {
+    //             if (
+    //                 error instanceof TokenAccountNotFoundError ||
+    //                 error instanceof TokenInvalidAccountOwnerError
+    //             ) {
+    //                 // If the account doesn't exist, create it
+    //                 try {
+    //                     const programId = TOKEN_2022_PROGRAM_ID;
+
+    //                     const transaction = new Transaction().add(
+    //                         createAssociatedTokenAccountInstruction(
+    //                             publicKey, // Payer
+    //                             associatedToken, // Associated token account
+    //                             recipientAddress, // Owner of the token account
+    //                             mint, // Token mint
+    //                             programId // Token program ID
+    //                         )
+    //                     );
+    //                     console.log(transaction, "transaction create successful");
+
+    //                     // Send the transaction to create the associated token account
+    //                     await sendTransaction(transaction, connection);
+    //                     console.log("Associated token account created and transaction sent");
+    //                 } catch (error) {
+    //                     console.error("Failed to create associated token account", error);
+    //                 }
+    //             }
+    //         }
+
+    //         // Now create the transfer transaction
+
+
+    //         console.log("acount is here:- ", account)
+    //         let amountInLamports = amount * Math.pow(10, 9);
+
+    //         const tx = new Transaction().add(
+    //             createTransferInstruction(
+    //                 sendersATA,
+    //                 account.address, // Use the correct associated token account address
+    //                 publicKey,
+    //                 amountInLamports,
+    //                 [], // Signers
+    //                 TOKEN_2022_PROGRAM_ID
+    //             )
+    //         );
+    //         console.log("before transaction", tx);
+
+    //         // Send the transfer transaction
+    //         await sendTransaction(tx, connection);
+    //         console.log("after transaction");
+
+    //         toast.success(`Transaction Sent`);
+    //     } catch (error) {
+    //         toast.error(`Transaction failed: ${error.message}`);
+    //         console.error("Transaction failed:", error);
+    //     } finally {
+    //         toast.dismiss(loadingToastId);
+    //     }
+    // };
+
+
+    // const handleSend = async () => {
+    //     console.log("Amount", amount);
+    //     console.log("Recipient", recipient, typeof recipient);
+
+    //     if (!publicKey) {
+    //         return;
+    //     }
+
+    //     const recipientAddress = new PublicKey(recipient);
+    //     console.log('step-1');
+    //     const loadingToastId = toast.loading("Processing transaction...");
+
+    //     const mint = new PublicKey(selectedToken);
+
+    //     // Ensure sender's ATA exists
+    //     const sendersATA = getAssociatedTokenAddressSync(
+    //         mint,
+    //         publicKey,
+    //         false,
+    //         TOKEN_2022_PROGRAM_ID
+    //     );
+
+    //     console.log(sendersATA, typeof sendersATA);
+    //     console.log('step-2');
+
+    //     try {
+    //         console.log('entered try-1');
+
+    //         // Ensure recipient has an associated token account
+    //         const associatedToken = getAssociatedTokenAddressSync(
+    //             mint,
+    //             recipientAddress,
+    //             false,
+    //             TOKEN_2022_PROGRAM_ID
+    //         );
+
+    //         console.log(associatedToken, "associatedToken");
+    //         let account;
+
+    //         try {
+    //             // Attempt to get the existing associated token account
+    //             account = await getAccount(
+    //                 connection,
+    //                 associatedToken,
+    //                 "confirmed",
+    //                 TOKEN_2022_PROGRAM_ID
+    //             );
+    //             console.log(account, "account get");
+
+    //         } catch (error) {
+    //             if (
+    //                 error instanceof TokenAccountNotFoundError ||
+    //                 error instanceof TokenInvalidAccountOwnerError
+    //             ) {
+    //                 // If the recipient's account doesn't exist, create it
+    //                 try {
+    //                     const programId = TOKEN_2022_PROGRAM_ID;
+
+    //                     const transaction = new Transaction().add(
+    //                         createAssociatedTokenAccountInstruction(
+    //                             publicKey, // Payer (the sender of the transaction)
+    //                             associatedToken, // Associated token account for the recipient
+    //                             recipientAddress, // Recipient of the token
+    //                             mint, // Token mint
+    //                             programId // Token program ID (Token-2022)
+    //                         )
+    //                     );
+    //                     console.log(transaction, "transaction create successful");
+
+    //                     // Send the transaction to create the associated token account
+    //                     await sendTransaction(transaction, connection);
+    //                     console.log("Associated token account created and transaction sent");
+
+    //                     // Get the newly created recipient's account
+    //                     account = await getAccount(
+    //                         connection,
+    //                         associatedToken,
+    //                         "confirmed",
+    //                         TOKEN_2022_PROGRAM_ID
+    //                     );
+    //                 } catch (error) {
+    //                     console.error("Failed to create associated token account", error);
+    //                     return; // Exit if ATA creation fails
+    //                 }
+    //             }
+    //         }
+
+    //         // Now proceed with the transfer after ensuring the recipient's ATA exists
+    //         console.log("acount is here:- ", account);
+    //         let amountInLamports = amount * Math.pow(10, 9);
+
+    //         const tx = new Transaction().add(
+    //             createTransferInstruction(
+    //                 sendersATA,
+    //                 associatedToken, // Use recipient's associated token account address
+    //                 publicKey,
+    //                 amountInLamports,
+    //                 [], // No additional signers needed for basic transfer
+    //                 TOKEN_2022_PROGRAM_ID
+    //             )
+    //         );
+    //         console.log("before transaction", tx);
+
+    //         // Send the transfer transaction
+    //         await sendTransaction(tx, connection);
+    //         console.log("after transaction");
+
+    //         toast.success(`Transaction Sent`);
+    //     } catch (error) {
+    //         toast.error(`Transaction failed: ${error.message}`);
+    //         console.error("Transaction failed:", error);
+    //     } finally {
+    //         toast.dismiss(loadingToastId);
+    //     }
+    // };
+
+
     const sendToken22 = async () => {
         if (!publicKey) return toast.error('Wallet is not connected');
         if (!recipient || !amount || amount < 0) return toast.error('Provide the correct credentials');
@@ -207,6 +584,8 @@ const TokenTransfer = () => {
             setIsSending(false);
         }
     };
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
