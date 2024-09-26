@@ -659,12 +659,12 @@ const TokenTransfer = () => {
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Recipient Address"} />
-                    <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} />
+                    <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} type={'text'} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Amount"} />
-                    <Input placeholder={"0.01"} value={amount} setter={setAmount} />
+                    <Input placeholder={"0.01"} value={amount} setter={setAmount} type={'number'} />
                 </div>
 
                 <Button btnText={"Send Transaction"} btnState={isSending} onStateText={"Sending..."} />

@@ -40,7 +40,7 @@ function SignMessage() {
             <form className='flex flex-col items-center gap-3 w-full' onSubmit={messageSign}>
                 <div className="space-y-2 w-full">
                     <Label labelText={"Message"} />
-                    <Input placeholder={"Greetings!"} value={message} setter={setMessage} />
+                    <Input placeholder={"Greetings!"} value={message} setter={setMessage} type={'text'} />
                 </div>
 
                 <Button btnText={"Sign Message"} btnState={isSigning} onStateText={"Signing..."} />

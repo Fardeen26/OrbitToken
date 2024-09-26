@@ -139,27 +139,27 @@ const CreateToken = () => {
             <form onSubmit={buildToken} className='flex flex-col items-center gap-3 w-full transition-all'>
                 <div className="space-y-2 w-full">
                     <Label labelText={"Name"} />
-                    <Input placeholder={"Dogecoin"} value={tokenName} setter={setTokenName} />
+                    <Input placeholder={"Dogecoin"} value={tokenName} setter={setTokenName} type={'text'} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Symbol"} />
-                    <Input placeholder={"DOGE!"} value={tokenSymbol} setter={setTokenSymbol} />
+                    <Input placeholder={"DOGE!"} value={tokenSymbol} setter={setTokenSymbol} type={'text'} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Image"} />
-                    <Input placeholder={"https://cat-image.com"} value={tokenImageUrl} setter={setTokenImageUrl} />
+                    <Input placeholder={"https://cat-image.png"} value={tokenImageUrl} setter={setTokenImageUrl} type={'text'} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Decimal"} />
-                    <Input placeholder={"9"} value={tokenDecimal} setter={setTokenDecimal} />
+                    <Input placeholder={"9"} value={tokenDecimal} setter={setTokenDecimal} type={'number'} />
                 </div>
 
                 <div className="space-y-2 w-full">
                     <Label labelText={"Supply"} />
-                    <Input placeholder={"1000"} value={tokenSupply} setter={setTokenSupply} />
+                    <Input placeholder={"1000"} value={tokenSupply} setter={setTokenSupply} type={'number'} />
                 </div>
 
                 <Button btnText={"Create Token"} btnState={isCreating} onStateText={"Creating..."} />
