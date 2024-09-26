@@ -3,11 +3,11 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom'
 import { DarkModeContext } from '../provider/DarkModeContext';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useLocation } from 'react-router-dom';
 
 const Navbar = () => {
     const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
-    const wallet = useWallet();
+    const location = useLocation();
 
     return (
         <div className="px-3 pt-3 pb-0 transition-all bg-white text-black dark:bg-black dark:text-white">
@@ -18,13 +18,13 @@ const Navbar = () => {
                     </div>
                     <div className="flex gap-20 align-baseline text-end">
                         <div className="align-bottom">
-                            <Link to={'/token'} className="text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff]">Tokens</Link>
+                            <Link to={'/token'} className={`text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff] ${location.pathname == '/token' ? 'dark:!opacity-100' : ''}`}>Tokens</Link>
                         </div>
                         <div className="">
-                            <Link to={'/transaction'} className="text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff]">Transaction</Link>
+                            <Link to={'/transaction'} className={`text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff] ${location.pathname == '/transaction' ? 'dark:!opacity-100' : ''}`}>Transaction</Link>
                         </div>
                         <div className="">
-                            <Link to={'/account'} className="text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff]">Account</Link>
+                            <Link to={'/account'} className={`text-xl font-semibold tracking-tight dark:opacity-80 dark:hover:opacity-100 dark:hover:text-white hover:text-[#6a2aff] ${location.pathname == '/account' ? 'dark:!opacity-100' : ''}`}>Account</Link>
                         </div>
                     </div>
 
