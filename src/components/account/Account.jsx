@@ -32,9 +32,9 @@ const Account = () => {
         if (!publicKey) return toast.error('Wallet is not connected');
         try {
             setIsAirdropping(true)
-            await connection.requestAirdrop(publicKey, 5 * LAMPORTS_PER_SOL);
+            await connection.requestAirdrop(publicKey, 50 * LAMPORTS_PER_SOL);
             setBalance(await connection.getBalance(publicKey) / 1000000000)
-            toast.success('5 SOL is successfully airdropped');
+            toast.success('50 SOL is successfully airdropped');
             setIsAirdropping(false)
         } catch (error) {
             toast.error(error.message)

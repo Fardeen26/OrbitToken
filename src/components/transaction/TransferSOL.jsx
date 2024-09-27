@@ -45,7 +45,7 @@ function TransferSOL() {
             <form className='flex flex-col items-center gap-3 w-full' onSubmit={sendSol}>
                 <div className="space-y-2 w-full">
                     <Label labelText={"Recipient Address"} />
-                    <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} type={'number'} />
+                    <Input placeholder={"578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1"} value={recipient} setter={setRecipient} type={'text'} />
                 </div>
 
                 <div className="space-y-2 w-full">
