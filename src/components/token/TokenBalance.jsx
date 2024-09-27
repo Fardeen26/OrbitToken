@@ -56,10 +56,11 @@ const TokenBalance = () => {
                     const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
                     let imageUrl = '';
                     if (metadata.uri != 'https://cdn.100xdevs.com/metadata.json') {
-                        const responce = await fetch(metadata.uri, {
+                        const response = await fetch(metadata.uri, {
                             method: 'GET'
                         });
-                        const data = await responce.json()
+                        const data = await response.json()
+                        console.log("data is", data);
                         imageUrl = data.image;
                     }
 
