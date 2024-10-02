@@ -60,7 +60,6 @@ const TokenBalance = () => {
                             method: 'GET'
                         });
                         const data = await response.json()
-                        console.log("data is", data);
                         imageUrl = data.image;
                     }
 
