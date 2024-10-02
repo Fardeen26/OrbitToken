@@ -85,11 +85,11 @@ const Account = () => {
             </button>
 
             {/* Airdrop Dropdown */}
-            <div className={`${isDropdownVisible ? 'block' : 'hidden'} absolute z-10 dark:bg-black bg-white p-10 border top-40 shadow-xl w-[30vw] h-[40vh] flex flex-col items-center justify-center`}>
+            <div className={`${isDropdownVisible ? 'block' : 'hidden'} absolute z-10 dark:bg-black bg-white p-10 border top-40 shadow-xl w-[30vw] h-[40vh] flex flex-col items-center justify-center rounded-2xl`}>
                 <span
                     className="absolute top-0 right-0 cursor-pointer p-2"
                     onClick={hideDropdown}>
-                    <Cross2Icon width={20} height={20} />
+                    <Cross2Icon width={20} height={20} className="hover:text-[#6a2aff] dark:hover:text-white hover:scale-110" />
                 </span>
 
                 <input
