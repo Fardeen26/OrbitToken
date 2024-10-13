@@ -88,7 +88,7 @@ const TokenBalance = () => {
     }, [connection, wallet])
 
     return (
-        <div className="h-full dark:bg-black">
+        <div className="h-full dark:bg-black max-sm:px-2">
             <Toaster position='bottom-right' />
             {
                 !wallet.publicKey && <p className="mt-12 text-center">wallet not connected</p>
@@ -98,7 +98,7 @@ const TokenBalance = () => {
             }
             {
                 token.length && token22.length && isFetching ? <p className="mt-12">Fetching...</p> : (
-                    <div className="w-[50vw] mt-12 flex flex-col gap-5">
+                    <div className="w-[50vw] max-sm:w-full mt-12 flex flex-col gap-5">
                         {token.map((token) => (
                             <div key={token.mintAddress} className="w-full rounded-xl flex justify-between p-4 shadow-lg items-center border">
                                 <div className="flex gap-4 items-center">
