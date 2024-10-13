@@ -5,7 +5,7 @@ import CreateToken from "./CreateToken";
 
 const Token = () => {
     return (
-        <div className="mt-10">
+        <div className="mt-10 max-sm:w-full">
             <TabComponent
                 title1={"Token Balance"}
                 title2={"Transfer Token"}

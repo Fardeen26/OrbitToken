@@ -134,7 +134,7 @@ const CreateToken = () => {
     }
 
     return (
-        <div className="transition-all dark:bg-black dark:text-white mt-8 flex justify-center p-5 w-[30vw] items-center rounded-lg">
+        <div className="transition-all dark:bg-black dark:text-white mt-8 flex justify-center p-5 w-[30vw] max-sm:w-full items-center rounded-lg">
             <Toaster position="bottom-right" />
             <form onSubmit={buildToken} className='flex flex-col items-center gap-3 w-full transition-all'>
                 <div className="space-y-2 w-full">
