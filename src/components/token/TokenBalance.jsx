@@ -54,23 +54,27 @@ const TokenBalance = () => {
                     const balance = account.account.data.parsed.info.tokenAmount.uiAmount;
 
                     const metadata = await getTokenMetadata(connection, new PublicKey(mintAddress), 'confirmed', TOKEN_2022_PROGRAM_ID);
-                    let imageUrl = '';
-                    if (metadata.uri != 'https://cdn.100xdevs.com/metadata.json') {
-                        const response = await fetch(metadata.uri, {
-                            method: 'GET'
-                        });
-                        const data = await response.json()
-                        imageUrl = data.image;
-                    }
+                    // let imageUrl = '';
+                    // if (metadata.uri != 'https://cdn.100xdevs.com/metadata.json') {
+                    //     const response = await fetch(metadata.uri, {
+                    //         method: 'GET'
+                    //     });
+                    //     const data = await response.json()
+                    //     imageUrl = data.image;
+                    // }
 
                     return {
                         mintAddress,
                         balance,
                         name: metadata.name || "Unknown Token-22",
                         symbol: metadata.symbol || "UNK",
-                        image: imageUrl || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s',
+                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s',
                     };
                 }));
+
+                if (userTokens22.length) {
+                    toast.info("There is an issue while fetching the image for Token 22, currently using an default image!")
+                }
 
                 setToken22(userTokens22);
                 setIsFetching(false)
