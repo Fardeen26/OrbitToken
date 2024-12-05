@@ -3,13 +3,11 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { ReactElement } from "react";
 import * as web3 from "@solana/web3.js";
-// import { SolanaChainContext } from "@/context/SolanaChainContext";
+import { useSolanaChain } from "@/hooks/useSolanaChain";
 
 const WalletContextProvider = ({ children }: { children: ReactElement }) => {
-    // const value = useContext(SolanaChainContext)
-    // const endpoint = value?.isDevnet ? import.meta.env.VITE_DEVNET_RPC_URL : import.meta.env.VITE_MAINNET_RPC_URL;
-    // const endpoint = import.meta.env.VITE_DEVNET_RPC_URL
-    const endpoint = web3.clusterApiUrl("devnet");
+    const { isDevnet } = useSolanaChain()
+    const endpoint = isDevnet ? web3.clusterApiUrl("devnet") : import.meta.env.VITE_MAINNET_RPC_URL;
     return (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={[]} autoConnect>
