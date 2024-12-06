@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { createAssociatedTokenAccountInstruction, createTransferInstruction, getAccount, getAssociatedTokenAddressSync, getOrCreateAssociatedTokenAccount, getTokenMetadata, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, TokenAccountNotFoundError, TokenInvalidAccountOwnerError } from "@solana/spl-token"
 import { PublicKey, PublicKeyInitData, Signer, Transaction } from "@solana/web3.js"
+import { useToast } from "@/hooks/use-toast"
 
 type NormalTokenType = {
     mint: string,
@@ -30,6 +32,7 @@ export function TransferForm() {
     const [amount, setAmount] = useState<string>()
     const { connection } = useConnection();
     const wallet = useWallet();
+    const { toast } = useToast();
 
     const fetchNormalTokens = async () => {
         const tokenMint = await connection.getParsedTokenAccountsByOwner(wallet.publicKey as PublicKey, { programId: TOKEN_PROGRAM_ID });
@@ -61,8 +64,19 @@ export function TransferForm() {
     };
 
     const transferNormalToken = async () => {
-        if (!wallet.publicKey) return console.error('Wallet is not connected');
-        if (!recipient || !amount) return console.error('Provide the correct credentials');
+        if (!wallet.publicKey) {
+            return toast({
+                variant: "destructive",
+                title: "Uh oh! Wallet not Connected",
+            })
+        }
+
+        if (!recipient || !amount || Number(amount) < 0) {
+            return toast({
+                variant: "destructive",
+                title: "Provide the correct credentials",
+            })
+        }
 
         try {
             const sourceAccount = await getOrCreateAssociatedTokenAccount(
@@ -122,17 +136,36 @@ export function TransferForm() {
             transferTransaction.feePayer = wallet.publicKey;
 
             const signature = await wallet.sendTransaction(transferTransaction, connection);
-            console.log(`Transaction is Successful! ${signature}`);
+            toast({
+                variant: 'default',
+                title: "Transaction is successful!",
+                description: `${signature}`
+            })
             setAmount('')
             setRecipient('');
         } catch (error) {
-            console.error(`Transaction failed: ${error}`);
+            return toast({
+                variant: "destructive",
+                title: "Transaction failed!",
+                description: `${error}`
+            })
         }
     };
 
     const transferSPLToken = async () => {
-        if (!wallet.publicKey) return console.error('Wallet is not connected');
-        if (!recipient || !amount) return console.error('Provide the correct credentials');
+        if (!wallet.publicKey) {
+            return toast({
+                variant: "destructive",
+                title: "Uh oh! Wallet not Connected",
+            })
+        }
+
+        if (!recipient || !amount || Number(amount) < 0) {
+            return toast({
+                variant: "destructive",
+                title: "Provide the correct credentials",
+            })
+        }
 
         const recipientAddress = new PublicKey(recipient);
         const mint = new PublicKey(selectedToken);
@@ -176,7 +209,12 @@ export function TransferForm() {
                         );
 
                         const signature = await wallet.sendTransaction(transaction, connection);
-                        console.info('Associated token account created');
+
+                        toast({
+                            variant: "default",
+                            title: "Associated token account created",
+                            description: `${recipient}.`
+                        })
 
                         const latestBlockhash = await connection.getLatestBlockhash();
                         await connection.confirmTransaction({
@@ -184,17 +222,18 @@ export function TransferForm() {
                             lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
                             signature,
                         });
-                        console.log("block hash created")
+
                     } catch (error) {
-                        console.info(error);
-                        return;
+                        return toast({
+                            variant: "destructive",
+                            title: "Error while transferring token",
+                            description: `${error}`
+                        })
                     }
                 }
             }
 
             const amountInLamports = Number(amount) * Math.pow(10, 9);
-
-            console.log("amount converted", amountInLamports)
 
             const tx = new Transaction().add(
                 createTransferInstruction(
@@ -208,9 +247,17 @@ export function TransferForm() {
             );
 
             const signature = await wallet.sendTransaction(tx, connection);
-            console.log(`Transaction Sent Successfully! ${signature}`);
+            toast({
+                variant: "default",
+                title: "Transaction Sent Successfully!",
+                description: `${signature}`
+            })
         } catch (error) {
-            console.error(`Transaction failed: ${error}`);
+            return toast({
+                variant: "destructive",
+                title: "Transaction failed!",
+                description: `${error}`
+            })
         }
     };
 

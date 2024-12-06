@@ -10,6 +10,7 @@ import { RecoilRoot } from 'recoil'
 import TransferSOL from './components/TransferSOL.tsx'
 import Account from './components/Account.tsx'
 import TokenRoute from './components/TokenRoute.tsx'
+import { Toaster } from "@/components/ui/toaster"
 
 
 createRoot(document.getElementById('root')!).render(
@@ -29,5 +30,6 @@ createRoot(document.getElementById('root')!).render(
         </WalletContextProvider>
       </SolanaChainProvider>
     </RecoilRoot>
+    <Toaster />
   </StrictMode>,
 )

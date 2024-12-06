@@ -13,10 +13,9 @@ export const getAirdrop = async (publicKey: PublicKey | null, connection: Connec
             status = (await connection.getSignatureStatus(airDropResult)).value;
         } while (!status || status.confirmationStatus !== "confirmed");
 
-        console.log("res is here", status)
         const totalBalance = await connection.getBalance(publicKey) / 1000000000;
         setWalletBalance(totalBalance)
     } catch (error) {
-        console.log("error while airdrop", error)
+        console.error("error while airdrop", error)
     }
 }

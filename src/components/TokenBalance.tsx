@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardContent } from "@/components/ui/card"
 import { useRecoilState } from "recoil";
 import { normalTokenBalance, token22TokenBalance, Token22Type } from "@/atoms";
@@ -6,16 +7,23 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID, AccountLayout, getTokenMetadata } from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
 import IPFSMetadataService from "@/utils/fetchMetadata";
+import { useToast } from "@/hooks/use-toast"
 
 export function TokenBalance() {
     const { connection } = useConnection();
     const wallet = useWallet();
+    const { toast } = useToast()
     const [normalTokens, setNormalTokens] = useRecoilState(normalTokenBalance);
     const [tokens22, setTokens22] = useRecoilState(token22TokenBalance);
 
     useEffect(() => {
         const getBalances = async () => {
-            if (!wallet.publicKey) return;
+            if (!wallet.publicKey) {
+                return toast({
+                    variant: "destructive",
+                    title: "Uh oh! Wallet not Connected",
+                })
+            };
             try {
                 const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
                     programId: TOKEN_PROGRAM_ID,
@@ -30,7 +38,11 @@ export function TokenBalance() {
                         const symbol = 'UNK';
                         return { mintAddress, balance, name, symbol };
                     } catch (error) {
-                        console.error("Error decoding account data:", error);
+                        toast({
+                            variant: "destructive",
+                            title: "Uh oh! Error fetching token metadata",
+                            description: `${error}`
+                        })
                         return null;
                     }
                 }).filter(token => token !== null);
@@ -38,7 +50,11 @@ export function TokenBalance() {
                 setNormalTokens(tokens)
 
             } catch (error) {
-                console.error("Error fetching token balances:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Error fetching tokens",
+                    description: `${error}`
+                })
             }
         };
 
@@ -69,7 +85,11 @@ export function TokenBalance() {
 
                         return { mintAddress, balance, name, symbol, imageUrl };
                     } catch (error) {
-                        console.error("Error decoding account data:", error);
+                        toast({
+                            variant: "destructive",
+                            title: "Uh oh! Error fetching token metadata",
+                            description: `${error}`
+                        })
                         return null;
                     }
                 }).filter(token => token !== null);
@@ -81,11 +101,20 @@ export function TokenBalance() {
                     })
                     .catch((error) => {
                         console.error('Error resolving token promises:', error);
+                        toast({
+                            variant: "destructive",
+                            title: "Uh oh! Error resolving token promises",
+                            description: `${error}`
+                        })
                     });
 
 
             } catch (error) {
-                console.error("Error fetching token balances:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Error fetching tokens",
+                    description: `${error}`
+                })
             }
         };
 
@@ -96,9 +125,11 @@ export function TokenBalance() {
 
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-
             {
-                normalTokens.length < 1 && tokens22.length < 1 && 'Loading...'
+                !wallet.publicKey && <p className="ml-2">Wallet not connected</p>
+            }
+            {
+                wallet.publicKey && normalTokens.length < 1 && tokens22.length < 1 && <p className="ml-2">Loading...</p>
             }
 
             {tokens22.map((token) => (

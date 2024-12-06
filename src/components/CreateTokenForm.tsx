@@ -10,11 +10,13 @@ import { Keypair, SystemProgram, Transaction } from "@solana/web3.js"
 import PinataService from "@/utils/uploadMetadata"
 import { createAssociatedTokenAccountInstruction, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, createMintToInstruction, ExtensionType, getAssociatedTokenAddressSync, getMintLen, LENGTH_SIZE, TOKEN_2022_PROGRAM_ID, TYPE_SIZE } from "@solana/spl-token"
 import { createInitializeInstruction, pack } from "@solana/spl-token-metadata"
+import { useToast } from "@/hooks/use-toast"
 
 export function CreateTokenForm() {
     const [tokenData, setTokenData] = useRecoilState(tokenCreationAtom);
     const { connection } = useConnection();
     const wallet = useWallet();
+    const { toast } = useToast()
 
     const handleInputChange = (event: { target: { id: any; value: any } }) => {
         const { id, value } = event.target;
@@ -37,19 +39,29 @@ export function CreateTokenForm() {
 
     const createToken = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
-        if (!wallet.publicKey) return console.error("Please connect to a wallet first")
-        if (!tokenData) return console.error("Provide the correct credentials")
+        if (!wallet.publicKey) {
+            return toast({
+                variant: "destructive",
+                title: "Uh oh! Wallet not Connected",
+            })
+        }
+        if (!tokenData) {
+            return toast({
+                variant: "destructive",
+                title: "Provide the correct credentials",
+            })
+        }
 
         try {
             const mintKeypair = Keypair.generate();
-
             let metadataUri = await uploadMetadata();
 
-            console.log("in cttoken fnx", metadataUri);
-
             if (!metadataUri) {
-                console.error("Failed to generate metadata URI, using custom URI")
                 metadataUri = import.meta.env.VITE_DEFAULT_URI
+                return toast({
+                    variant: "destructive",
+                    title: "Failed to upload metadata",
+                })
             };
 
             const metadata = {
@@ -93,15 +105,18 @@ export function CreateTokenForm() {
 
             await wallet.sendTransaction(transaction, connection);
 
-            console.info(`Token mint created at ${mintKeypair.publicKey.toBase58()}`)
+            toast({
+                variant: 'default',
+                title: "Token mint created",
+                description: `${mintKeypair.publicKey.toBase58()}`
+            })
+
             const associatedToken = getAssociatedTokenAddressSync(
                 mintKeypair.publicKey,
                 wallet.publicKey,
                 false,
                 TOKEN_2022_PROGRAM_ID,
             );
-
-            console.info(associatedToken.toBase58())
 
             const transaction2 = new Transaction().add(
                 createAssociatedTokenAccountInstruction(
@@ -114,10 +129,28 @@ export function CreateTokenForm() {
                 createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey, tokenData.tokenSupply * Math.pow(10, tokenData.tokenDecimals), [], TOKEN_2022_PROGRAM_ID)
             );
 
-            await wallet.sendTransaction(transaction2, connection);
+            const signature = await wallet.sendTransaction(transaction2, connection);
+
+            toast({
+                variant: 'default',
+                title: "Token is created Successfully!",
+                description: `${signature}`
+            })
+
+            setTokenData({
+                tokenName: '',
+                tokenSymbol: '',
+                tokenImage: '',
+                tokenSupply: 0,
+                tokenDecimals: 0,
+            })
 
         } catch (error) {
-            console.error('Error while creating token', error)
+            toast({
+                variant: 'destructive',
+                title: "rror while creating token",
+                description: `${error}`
+            })
         }
     }
 

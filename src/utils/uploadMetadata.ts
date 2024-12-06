@@ -12,7 +12,6 @@ class PinataService {
     static SECRET_KEY = import.meta.env.VITE_PINATA_SECRET_KEY as string;
 
     static async uploadMetadata(metadata: TokenMetadata): Promise<string> {
-        console.log("internal metadata", metadata)
         try {
             const response = await axios.post(
                 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
@@ -26,9 +25,6 @@ class PinataService {
                 }
             );
 
-            console.log("respoonse i9s here", response)
-
-            // IPFS hash
             return `ipfs://${response.data.IpfsHash}`;
         } catch (error) {
             console.error('Failed to upload to IPFS:', error);

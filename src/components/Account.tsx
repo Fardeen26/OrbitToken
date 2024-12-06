@@ -6,6 +6,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { walletBalanceAtom } from "@/atoms";
 import { useRecoilState } from "recoil";
 
+
 export default function Account() {
     const { connection } = useConnection();
     const { publicKey } = useWallet();
