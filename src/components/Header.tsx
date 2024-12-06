@@ -33,7 +33,7 @@ export function Header() {
                     </nav>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button variant="outline" size="sm" className="hidden sm:flex gap-2 border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-white" onClick={toggleChain}>
+                    <Button variant="outline" size="sm" className="hidden sm:flex gap-2 border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-gray-900" onClick={toggleChain}>
                         <span className="relative flex h-2 w-2">
                             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isDevnet ? 'bg-green-400' : 'bg-red-400'}  opacity-75`}></span>
                             <span className={`relative inline-flex rounded-full h-2 w-2 ${isDevnet ? 'bg-green-500' : 'bg-red-500'}`}></span>

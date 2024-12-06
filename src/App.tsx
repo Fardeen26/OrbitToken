@@ -47,9 +47,11 @@ export default function Home() {
               The next-generation Solana wallet adaptor that empowers you to manage your SOL and tokens with ease
             </p>
             <div className="flex justify-center gap-4">
-              <Button size="lg" className="gap-2">
-                Get Started <ArrowRight className="w-4 h-4" />
-              </Button>
+              <a href="/token">
+                <Button size="lg" className="gap-2">
+                  Get Started <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </section>
 
