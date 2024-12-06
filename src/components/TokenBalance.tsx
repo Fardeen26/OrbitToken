@@ -17,13 +17,22 @@ export function TokenBalance() {
     const [tokens22, setTokens22] = useRecoilState(token22TokenBalance);
 
     useEffect(() => {
+        if (!wallet.publicKey) {
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Wallet not Connected",
+            })
+        };
+        if (wallet.publicKey) {
+            toast({
+                variant: "default",
+                title: "Wallet connected successfully",
+            })
+        }
         const getBalances = async () => {
             if (!wallet.publicKey) {
-                return toast({
-                    variant: "destructive",
-                    title: "Uh oh! Wallet not Connected",
-                })
-            };
+                return null;
+            }
             try {
                 const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
                     programId: TOKEN_PROGRAM_ID,
