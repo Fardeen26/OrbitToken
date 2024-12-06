@@ -17,21 +17,9 @@ export function TokenBalance() {
     const [tokens22, setTokens22] = useRecoilState(token22TokenBalance);
 
     useEffect(() => {
-        if (!wallet.publicKey) {
-            toast({
-                variant: "destructive",
-                title: "Uh oh! Wallet not Connected",
-            })
-        };
-        if (wallet.publicKey) {
-            toast({
-                variant: "default",
-                title: "Wallet connected successfully",
-            })
-        }
         const getBalances = async () => {
             if (!wallet.publicKey) {
-                return null;
+                return;
             }
             try {
                 const tokenAccounts = await connection.getTokenAccountsByOwner(wallet.publicKey, {
@@ -127,8 +115,10 @@ export function TokenBalance() {
             }
         };
 
-        getBalances()
-        getBalances22()
+        if (wallet.publicKey) {
+            getBalances()
+            getBalances22()
+        }
     }, [connection, setNormalTokens, setTokens22, wallet])
 
 
@@ -138,50 +128,52 @@ export function TokenBalance() {
                 !wallet.publicKey && <p className="ml-2">Wallet not connected</p>
             }
             {
-                wallet.publicKey && normalTokens.length < 1 && tokens22.length < 1 && <p className="ml-2">Loading...</p>
+                wallet.publicKey && !normalTokens.length && !tokens22.length && <p className="ml-2">No Tokens Present</p>
             }
 
-            {tokens22.map((token) => (
-                <Card key={token.mintAddress} className="overflow-hidden">
-                    <CardContent className="p-0">
-                        <div className="flex items-center space-x-4 p-4">
-                            <div className="relative h-12 w-12 max-lg:h-fit max-lg:w-fit rounded-lg">
-                                <img
-                                    src={token.imageUrl}
-                                    alt={token.name}
-                                    className="rounded-full object-cover max-lg:w-10 max-lg:h-10"
-                                />
+            {
+                wallet.publicKey && tokens22.map((token) => (
+                    <Card key={token.mintAddress} className="overflow-hidden">
+                        <CardContent className="p-0">
+                            <div className="flex items-center space-x-4 p-4">
+                                <div className="relative h-12 w-12 max-lg:h-fit max-lg:w-fit rounded-lg">
+                                    <img
+                                        src={token.imageUrl}
+                                        alt={token.name}
+                                        className="rounded-full object-cover max-lg:w-10 max-lg:h-10"
+                                    />
+                                </div>
+                                <div className="space-y-1 max-sm:w-[70vw] max-lg:w-[30vw]">
+                                    <h3 className="font-semibold leading-none tracking-tight">{token.name}</h3>
+                                    <p className="text-sm overflow-clip text-ellipsis">{token.mintAddress}</p>
+                                    <p className="font-bold">
+                                        {token.balance} {token.symbol}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="space-y-1 max-sm:w-[70vw] max-lg:w-[30vw]">
-                                <h3 className="font-semibold leading-none tracking-tight">{token.name}</h3>
-                                <p className="text-sm overflow-clip text-ellipsis">{token.mintAddress}</p>
-                                <p className="font-bold">
-                                    {token.balance} {token.symbol}
-                                </p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
+                        </CardContent>
+                    </Card>
+                ))}
 
-            {normalTokens.map((token) => (
-                <Card key={token.mintAddress} className="overflow-hidden">
-                    <CardContent className="p-0">
-                        <div className="flex items-center space-x-4 p-4">
-                            <div className="relative px-2 h-10 w-10 max-sm:h-12 max-sm:w-12 flex items-center justify-center rounded-full bg-gray-200">
-                                <span className="text-xs font-semibold">{token.mintAddress.substring(0, 4)}</span>
+            {
+                wallet.publicKey && normalTokens.map((token) => (
+                    <Card key={token.mintAddress} className="overflow-hidden">
+                        <CardContent className="p-0">
+                            <div className="flex items-center space-x-4 p-4">
+                                <div className="relative px-2 h-10 w-10 max-sm:h-12 max-sm:w-12 flex items-center justify-center rounded-full bg-gray-200">
+                                    <span className="text-xs font-semibold">{token.mintAddress.substring(0, 4)}</span>
+                                </div>
+                                <div className="space-y-1 max-sm:w-[70vw]">
+                                    <h3 className="font-semibold leading-none tracking-tight">{token.name}</h3>
+                                    <p className="text-sm overflow-clip text-ellipsis">{token.mintAddress}</p>
+                                    <p className="font-bold">
+                                        {token.balance} {token.symbol}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="space-y-1 max-sm:w-[70vw]">
-                                <h3 className="font-semibold leading-none tracking-tight">{token.name}</h3>
-                                <p className="text-sm overflow-clip text-ellipsis">{token.mintAddress}</p>
-                                <p className="font-bold">
-                                    {token.balance} {token.symbol}
-                                </p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
+                        </CardContent>
+                    </Card>
+                ))}
         </div>
     )
 }
