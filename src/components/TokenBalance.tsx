@@ -77,6 +77,21 @@ export function TokenBalance() {
                             const data = await IPFSMetadataService.fetchMetadataWithFallback(metadata.uri)
                             imageUrl = data.tokenImage;
                         } else {
+                            if (!metadata) {
+                                return;
+                            }
+                            try {
+                                const response = await fetch(metadata.uri, {
+                                    method: 'GET'
+                                });
+                                const data = await response.json()
+                                imageUrl = data.image;
+                            } catch (error) {
+                                console.log(error)
+                            }
+                        }
+
+                        if (!imageUrl) {
                             imageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg600Xa4ws6jp54kMDNGYF232lIhY51QJqEA&s'
                         }
 
