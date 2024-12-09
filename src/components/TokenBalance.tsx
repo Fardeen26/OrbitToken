@@ -175,7 +175,7 @@ export function TokenBalance() {
                     <Card key={token.mintAddress} className="overflow-hidden">
                         <CardContent className="p-0">
                             <div className="flex items-center space-x-4 p-4">
-                                <div className="relative px-2 h-10 w-10 max-sm:h-12 max-sm:w-12 flex items-center justify-center rounded-full bg-gray-200">
+                                <div className="relative px-2 h-10 w-10 max-sm:h-12 max-sm:w-12 flex items-center justify-center rounded-full bg-gray-200 dark:text-black">
                                     <span className="text-xs font-semibold">{token.mintAddress.substring(0, 4)}</span>
                                 </div>
                                 <div className="space-y-1 max-sm:w-[70vw]">
