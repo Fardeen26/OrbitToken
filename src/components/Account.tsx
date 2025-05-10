@@ -39,7 +39,7 @@ export default function Account() {
                 <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
                     <div className="space-y-1">
                         <p className="text-sm font-medium leading-none">Total Balance</p>
-                        <p className="text-2xl font-bold"> {`${publicKey ? walletBalance : '0'}`} SOL</p>
+                        <p className="text-2xl font-bold"> {`${publicKey ? walletBalance + 'SOL' : 'Wallet not connected'}`}</p>
                     </div>
                     <Drawer>
                         <DrawerTrigger><Button>Get Airdrop</Button></DrawerTrigger>

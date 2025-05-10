@@ -44,11 +44,11 @@ export default function Home() {
               OrbitToken
             </h1>
             <p className="mx-auto max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-              The next-generation Solana wallet adaptor that empowers you to manage your SOL and tokens with ease
+              The next-generation Solana wallet that empowers you to manage your SOL and tokens with ease
             </p>
             <div className="flex justify-center gap-4">
               <a href="/token">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 rounded-lg">
                   Get Started <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>

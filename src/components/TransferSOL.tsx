@@ -6,10 +6,12 @@ import { Button } from './ui/button';
 import { useState } from 'react';
 import { PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { useToast } from '@/hooks/use-toast';
+import { LucideLoader2 } from 'lucide-react';
 
 
 export default function TransferSOL() {
     const [recipient, setRecipient] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [amount, setAmount] = useState<string>();
     const { connection } = useConnection();
     const wallet = useWallet();
@@ -29,7 +31,7 @@ export default function TransferSOL() {
                 title: "Provide the correct credentials",
             })
         }
-
+        setIsSubmitting(true);
         try {
             const lamports = BigInt(Number(amount) * Math.pow(10, 9));
             const transaction = new Transaction().add(
@@ -40,11 +42,11 @@ export default function TransferSOL() {
                 })
             );
 
-            const tnx = await wallet.sendTransaction(transaction, connection)
+            await wallet.sendTransaction(transaction, connection)
+
             toast({
                 variant: 'default',
                 title: "Transaction is successful!",
-                description: `${tnx}`
             })
 
             setRecipient('');
@@ -52,9 +54,11 @@ export default function TransferSOL() {
         } catch (error) {
             return toast({
                 variant: "destructive",
-                title: "Error while transferring token",
-                description: `${error}`
+                title: "Error",
+                description: error instanceof Error ? error.message : "An unknown error occurred"
             })
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -74,7 +78,11 @@ export default function TransferSOL() {
                     <Label htmlFor="amount">Amount</Label>
                     <Input id="amount" type="number" placeholder="0.00" onChange={(e) => setAmount(e.target.value)} />
                 </div>
-                <Button className="w-full" onClick={transferSol}>Send Transaction</Button>
+                <Button className="w-full" onClick={transferSol}>
+                    {
+                        isSubmitting ? <span className="flex items-center"><LucideLoader2 className="animate-spin mr-2" /> Transferring</span> : 'Send Transaction'
+                    }
+                </Button>
             </CardContent>
         </Card>
     )

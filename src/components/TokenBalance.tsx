@@ -140,7 +140,7 @@ export function TokenBalance() {
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {
-                !wallet.publicKey && <p className="ml-2">Wallet not connected</p>
+                !wallet.publicKey && <p className="ml-2">Wallet not connected :(</p>
             }
             {
                 wallet.publicKey && !normalTokens.length && !tokens22.length && <p className="ml-2">No Tokens Present</p>

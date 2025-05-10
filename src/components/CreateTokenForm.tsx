@@ -11,9 +11,12 @@ import PinataService from "@/utils/uploadMetadata"
 import { createAssociatedTokenAccountInstruction, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, createMintToInstruction, ExtensionType, getAssociatedTokenAddressSync, getMintLen, LENGTH_SIZE, TOKEN_2022_PROGRAM_ID, TYPE_SIZE } from "@solana/spl-token"
 import { createInitializeInstruction, pack } from "@solana/spl-token-metadata"
 import { useToast } from "@/hooks/use-toast"
+import { useState } from "react"
+import { LucideLoader2 } from "lucide-react"
 
 export function CreateTokenForm() {
     const [tokenData, setTokenData] = useRecoilState(tokenCreationAtom);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { connection } = useConnection();
     const wallet = useWallet();
     const { toast } = useToast()
@@ -52,6 +55,7 @@ export function CreateTokenForm() {
             })
         }
 
+        setIsSubmitting(true);
         try {
             const mintKeypair = Keypair.generate();
             let metadataUri = await uploadMetadata();
@@ -108,7 +112,6 @@ export function CreateTokenForm() {
             toast({
                 variant: 'default',
                 title: "Token mint created",
-                description: `${mintKeypair.publicKey.toBase58()}`
             })
 
             const associatedToken = getAssociatedTokenAddressSync(
@@ -129,12 +132,11 @@ export function CreateTokenForm() {
                 createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey, tokenData.tokenSupply * Math.pow(10, tokenData.tokenDecimals), [], TOKEN_2022_PROGRAM_ID)
             );
 
-            const signature = await wallet.sendTransaction(transaction2, connection);
+            await wallet.sendTransaction(transaction2, connection);
 
             toast({
                 variant: 'default',
                 title: "Token is created Successfully!",
-                description: `${signature}`
             })
 
             setTokenData({
@@ -149,8 +151,10 @@ export function CreateTokenForm() {
             toast({
                 variant: 'destructive',
                 title: "rror while creating token",
-                description: `${error}`
+                description: error instanceof Error ? error.message : "An unknown error occurred"
             })
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -163,25 +167,57 @@ export function CreateTokenForm() {
             <CardContent className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="tokenName">Token Name</Label>
-                    <Input id="tokenName" placeholder="Enter token name" onChange={handleInputChange} />
+                    <Input
+                        id="tokenName"
+                        placeholder="Enter token name"
+                        onChange={handleInputChange}
+                        value={tokenData.tokenName}
+                    />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="tokenSymbol">Token Symbol</Label>
-                    <Input id="tokenSymbol" placeholder="Enter token symbol" onChange={handleInputChange} />
+                    <Input
+                        id="tokenSymbol"
+                        placeholder="Enter token symbol"
+                        onChange={handleInputChange}
+                        value={tokenData.tokenSymbol}
+                    />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="tokenImage">Image URL</Label>
-                    <Input id="tokenImage" type="text" placeholder="https://cat.png" onChange={handleInputChange} />
+                    <Input
+                        id="tokenImage"
+                        type="text"
+                        placeholder="https://cat.png"
+                        onChange={handleInputChange}
+                        value={tokenData.tokenImage}
+                    />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="tokenDecimals">Decimals</Label>
-                    <Input id="tokenDecimals" type="number" placeholder="9" onChange={handleInputChange} />
+                    <Input
+                        id="tokenDecimals"
+                        type="number"
+                        placeholder="9"
+                        onChange={handleInputChange}
+                        value={tokenData.tokenDecimals}
+                    />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="tokenSupply">Initial Supply</Label>
-                    <Input id="tokenSupply" type="number" placeholder="1000000" onChange={handleInputChange} />
+                    <Input
+                        id="tokenSupply"
+                        type="number"
+                        placeholder="1000000"
+                        onChange={handleInputChange}
+                        value={tokenData.tokenSupply}
+                    />
                 </div>
-                <Button className="w-full" onClick={createToken}>Create Token</Button>
+                <Button className="w-full" onClick={createToken}>
+                    {
+                        isSubmitting ? <span className="flex items-center"><LucideLoader2 className="animate-spin mr-2" /> Creating</span> : 'Create Token'
+                    }
+                </Button>
             </CardContent>
         </Card>
     )

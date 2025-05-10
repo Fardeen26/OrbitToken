@@ -9,6 +9,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { createAssociatedTokenAccountInstruction, createTransferInstruction, getAccount, getAssociatedTokenAddressSync, getOrCreateAssociatedTokenAccount, getTokenMetadata, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, TokenAccountNotFoundError, TokenInvalidAccountOwnerError } from "@solana/spl-token"
 import { PublicKey, PublicKeyInitData, Signer, Transaction } from "@solana/web3.js"
 import { useToast } from "@/hooks/use-toast"
+import { LucideLoader2 } from "lucide-react"
 
 type NormalTokenType = {
     mint: string,
@@ -27,9 +28,10 @@ export function TransferForm() {
     const [normatTokens, setNormalTokens] = useState<NormalTokenType[]>([]);
     const [splTokens, setSplTokens] = useState<SplTokenType[]>([]);
     const [selectedTokenType, setSelectedTokenType] = useState<string>();
-    const [selectedToken, setSelectedToken] = useState<PublicKeyInitData>('Bk3vZPEA5STZTrytbx2YhK57rtQ21rDSPhmiv8UzUVdv');
-    const [recipient, setRecipient] = useState<PublicKeyInitData>('578xpu1oZP9HfL1uMP98bVDpbcwbJwCn2T2xYz3uhML1');
+    const [selectedToken, setSelectedToken] = useState<PublicKeyInitData | null>('');
+    const [recipient, setRecipient] = useState<PublicKeyInitData>('');
     const [amount, setAmount] = useState<string>()
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { connection } = useConnection();
     const wallet = useWallet();
     const { toast } = useToast();
@@ -71,13 +73,14 @@ export function TransferForm() {
             })
         }
 
-        if (!recipient || !amount || Number(amount) < 0) {
+        if (!recipient || !amount || Number(amount) < 0 || !selectedToken) {
             return toast({
                 variant: "destructive",
                 title: "Provide the correct credentials",
             })
         }
 
+        setIsSubmitting(true);
         try {
             const sourceAccount = await getOrCreateAssociatedTokenAccount(
                 connection,
@@ -135,20 +138,22 @@ export function TransferForm() {
             transferTransaction.recentBlockhash = latestBlockHash.blockhash;
             transferTransaction.feePayer = wallet.publicKey;
 
-            const signature = await wallet.sendTransaction(transferTransaction, connection);
+            await wallet.sendTransaction(transferTransaction, connection);
             toast({
                 variant: 'default',
                 title: "Transaction is successful!",
-                description: `${signature}`
             })
             setAmount('')
             setRecipient('');
+            setSelectedToken(null);
         } catch (error) {
             return toast({
                 variant: "destructive",
                 title: "Transaction failed!",
-                description: `${error}`
+                description: error instanceof Error ? error.message : "An unknown error occurred"
             })
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -160,13 +165,14 @@ export function TransferForm() {
             })
         }
 
-        if (!recipient || !amount || Number(amount) < 0) {
+        if (!recipient || !amount || Number(amount) < 0 || !selectedToken) {
             return toast({
                 variant: "destructive",
                 title: "Provide the correct credentials",
             })
         }
 
+        setIsSubmitting(true);
         const recipientAddress = new PublicKey(recipient);
         const mint = new PublicKey(selectedToken);
 
@@ -213,7 +219,6 @@ export function TransferForm() {
                         toast({
                             variant: "default",
                             title: "Associated token account created",
-                            description: `${recipient}.`
                         })
 
                         const latestBlockhash = await connection.getLatestBlockhash();
@@ -227,7 +232,7 @@ export function TransferForm() {
                         return toast({
                             variant: "destructive",
                             title: "Error while transferring token",
-                            description: `${error}`
+                            description: error instanceof Error ? error.message : "An unknown error occurred"
                         })
                     }
                 }
@@ -246,18 +251,23 @@ export function TransferForm() {
                 )
             );
 
-            const signature = await wallet.sendTransaction(tx, connection);
+            await wallet.sendTransaction(tx, connection);
             toast({
                 variant: "default",
                 title: "Transaction Sent Successfully!",
-                description: `${signature}`
             })
+            setAmount('')
+            setRecipient('');
+            setSelectedToken(null);
         } catch (error) {
+            console.log(error);
             return toast({
                 variant: "destructive",
                 title: "Transaction failed!",
-                description: `${error}`
+                description: error instanceof Error ? error.message : "An unknown error occurred"
             })
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -327,13 +337,17 @@ export function TransferForm() {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="address">Recipient Address</Label>
-                    <Input id="address" placeholder="Enter recipient's wallet address" onChange={(e) => setRecipient(e.target.value)} />
+                    <Input id="address" value={recipient as string} placeholder="Enter recipient's wallet address" onChange={(e) => setRecipient(e.target.value)} />
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="amount">Amount</Label>
-                    <Input id="amount" type="number" placeholder="0.00" onChange={(e) => setAmount(e.target.value)} />
+                    <Input id="amount" value={amount} type="number" placeholder="0.00" onChange={(e) => setAmount(e.target.value)} />
                 </div>
-                <Button className="w-full" onClick={handleTransfer}>Send Transaction</Button>
+                <Button className="w-full" onClick={handleTransfer}>
+                    {
+                        isSubmitting ? <span className="flex items-center"><LucideLoader2 className="animate-spin mr-2" /> Sending</span> : 'Send Transaction'
+                    }
+                </Button>
             </CardContent>
         </Card>
     )
